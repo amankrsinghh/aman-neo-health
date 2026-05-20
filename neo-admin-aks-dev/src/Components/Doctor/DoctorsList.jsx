@@ -188,7 +188,7 @@ function DoctorsList() {
 
                       <td>
                         <img
-                          src={d?.profileImage ? `${base_url}/${d?.profileImage}` : "/doctor-avatr.png"}
+                          src={(d?.profileImage || d?.doctor?.profileImage) ? `${base_url}/${d?.profileImage || d?.doctor?.profileImage}` : "/doctor-avatr.png"}
                           width="100"
                           // style={{ borderRadius: "50%", objectFit: "cover" }}
                           onError={(e) => {
@@ -211,18 +211,18 @@ function DoctorsList() {
                         </ul>
                       </td>
 
-                      <td>{calculateAge(d?.dob)}</td>
-                      <td>{d?.specialty?.name || "-"}</td>
-                      <td>{d?.about?.hospitalName || "-"}</td>
+                      <td>{calculateAge(d?.dob || d?.doctor?.dob)}</td>
+                      <td>{d?.specialty?.name || d?.doctor?.specialty?.name || "-"}</td>
+                      <td>{d?.about?.hospitalName || d?.doctor?.about?.hospitalName || "-"}</td>
 
                       {/* ===== STATUS TOGGLE ===== */}
                       <td>
                         <span
-                          className={`approved ${statusClass(d.status)}`}
+                          className={`approved ${statusClass(d.status || d?.doctor?.status)}`}
                           style={{ cursor: "pointer" }}
-                          onClick={() => toggleStatus(d._id)}
+                          onClick={() => toggleStatus(d.doctor?._id || d._id)}
                         >
-                          {d.status === "approved" ? "Approved" : "Pending"}
+                          {(d.status === "approved" || d?.doctor?.status === "approved") ? "Approved" : "Pending"}
                         </span>
                       </td>
 
@@ -241,7 +241,7 @@ function DoctorsList() {
                           <ul className="dropdown-menu dropdown-menu-end">
                             <li>
                               <NavLink
-                                to={`/doctor-info-details/${d?.user?._id}`}
+                                to={`/doctor-info-details/${d?.user?._id || d?._id}`}
                                 className="dropdown-item"
                               >
                                 View Details

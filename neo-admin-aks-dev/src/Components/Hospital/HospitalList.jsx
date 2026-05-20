@@ -241,14 +241,14 @@ function HospitalList() {
 
                             <td>
                               <span
-                                className={`text-capitalize approved ${item.kycStatus === "approved"
+                                className={`text-capitalize approved ${ (item.kycStatus || item.hospitalId?.kycStatus) === "approved"
                                     ? "approved-active"
-                                    : (item.kycStatus === "rejected" || item.kycStatus === "block")
+                                    : ( (item.kycStatus || item.hospitalId?.kycStatus) === "rejected" || (item.kycStatus || item.hospitalId?.kycStatus) === "block")
                                       ? "reject"
                                       : "approved-pending"
                                   }`}
                               >
-                                {item.kycStatus}
+                                {item.kycStatus || item.hospitalId?.kycStatus || "pending"}
                               </span>
                             </td>
 
@@ -264,7 +264,7 @@ function HospitalList() {
                                 <ul className="dropdown-menu dropdown-menu-end mt-2 admin-dropdown-card">
                                   <li className="prescription-item">
                                     <NavLink
-                                      to={`/hospital-info-details/${item._id}`}
+                                      to={`/hospital-info-details/${item.hospitalId?._id || item._id}`}
                                       className="prescription-nav"
                                     >
                                       View Details
@@ -273,10 +273,10 @@ function HospitalList() {
                                   <li className="prescription-item">
                                     <button
                                       className="prescription-nav w-100"
-                                      onClick={() => toggleStatus(item?._id,item?.kycStatus !== "approved" ? "approved" : "rejected")}
-                                      to={`/hospital-info-details/${item._id}`}
+                                      onClick={() => toggleStatus(item.hospitalId?._id || item?._id, (item?.kycStatus || item.hospitalId?.kycStatus) !== "approved" ? "approved" : "rejected")}
+                                      to={`/hospital-info-details/${item.hospitalId?._id || item._id}`}
                                     >
-                                      {item?.kycStatus !== "approved" ? "Approved" : "Rejected"}
+                                      {(item?.kycStatus || item.hospitalId?.kycStatus) !== "approved" ? "Approved" : "Rejected"}
                                     </button>
                                   </li>
 

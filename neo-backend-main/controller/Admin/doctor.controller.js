@@ -74,28 +74,26 @@ export const getDoctors = async (req, res) => {
     const matchQuery = {
       $or: [
         { name: { $regex: search, $options: "i" } },
-        { nh12: { $regex: search, $options: "i" } },
         { email: { $regex: search, $options: "i" } },
         { contactNumber: { $regex: search, $options: "i" } },
-      ],
-      role: "doctor"
+      ]
     };
-    // if (status && status !== "all") matchQuery.status = status;
+    if (status && status !== "all") matchQuery.status = status;
 
-    const doctors = await User.aggregate([
+    const doctors = await Doctor.aggregate([
       { $match: matchQuery },
       {
         $lookup: {
-          from: "doctors",               // users collection
-          localField: "doctorId",
+          from: "users",
+          localField: "userId",
           foreignField: "_id",
-          as: "doctor"
+          as: "user"
         }
       },
-      { $unwind: { path: "$doctor", preserveNullAndEmptyArrays: true } },
+      { $unwind: { path: "$user", preserveNullAndEmptyArrays: true } },
       {
         $lookup: {
-          from: "doctor-abouts",               // users collection
+          from: "doctor-abouts",
           localField: "userId",
           foreignField: "userId",
           as: "about"
@@ -104,13 +102,24 @@ export const getDoctors = async (req, res) => {
       { $unwind: { path: "$about", preserveNullAndEmptyArrays: true } },
       {
         $lookup: {
-          from: "specialities", // 👈 collection name check kar lena
+          from: "specialities",
           localField: "about.specialty",
           foreignField: "_id",
           as: "specialty"
         }
       },
       { $unwind: { path: "$specialty", preserveNullAndEmptyArrays: true } },
+      // Search in nh12 if search exists
+      ...(search ? [{
+        $match: {
+          $or: [
+            { name: { $regex: search, $options: "i" } },
+            { email: { $regex: search, $options: "i" } },
+            { contactNumber: { $regex: search, $options: "i" } },
+            { "user.nh12": { $regex: search, $options: "i" } }
+          ]
+        }
+      }] : []),
       { $sort: { createdAt: -1 } },
       { $skip: skip },
       { $limit: limit },
@@ -118,19 +127,22 @@ export const getDoctors = async (req, res) => {
         $project: {
           name: 1,
           email: 1,
-          nh12: 1,
           contactNumber: 1,
-          "doctor.dob": 1,
-          "doctor._id": 1,
-          "doctor.status": 1,
-          "doctor.profileImage": 1,
+          dob: 1,
+          profileImage: 1,
+          status: 1,
+          _id: 1, // Doctor ID
+          "user.nh12": 1,
+          "user._id": 1, // User ID for link
           "about.hospitalName": 1,
           "specialty.name": 1,
         }
       }
     ]);
 
-    const total = await User.countDocuments(matchQuery);
+    console.log("DEBUG: getDoctors first result:", JSON.stringify(doctors[0], null, 2));
+
+    const total = await Doctor.countDocuments(matchQuery);
 
     res.json({
       success: true,
