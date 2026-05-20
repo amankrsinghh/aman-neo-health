@@ -337,3 +337,8 @@
 
 
 
+
+.nw-chat-usr-card.active {
+    background-color: #00B4B520 !important;
+    border-left: 4px solid #00B4B5 !important;
+}

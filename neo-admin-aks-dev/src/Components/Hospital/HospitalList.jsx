@@ -14,6 +14,7 @@ import api from "../../utils/axios";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import base_url from "../../Services/baseUrl";
+import { statusClass } from "../../Services/globalFunction";
 
 function HospitalList() {
   const [hospitals, setHospitals] = useState([]);
@@ -240,16 +241,14 @@ function HospitalList() {
                             :item?.address?.fullAddress: "—"}</td>
 
                             <td>
-                              <span
-                                className={`text-capitalize approved ${ (item.kycStatus || item.hospitalId?.kycStatus) === "approved"
-                                    ? "approved-active"
-                                    : ( (item.kycStatus || item.hospitalId?.kycStatus) === "rejected" || (item.kycStatus || item.hospitalId?.kycStatus) === "block")
-                                      ? "reject"
-                                      : "approved-pending"
-                                  }`}
-                              >
-                                {item.kycStatus || item.hospitalId?.kycStatus || "pending"}
-                              </span>
+                              {(() => {
+                                const sts = item.kycStatus || item.hospitalId?.kycStatus || "pending";
+                                return (
+                                  <span className={`text-capitalize approved ${statusClass(sts)}`}>
+                                    {sts.charAt(0).toUpperCase() + sts.slice(1)}
+                                  </span>
+                                );
+                              })()}
                             </td>
 
                             <td>
@@ -273,10 +272,13 @@ function HospitalList() {
                                   <li className="prescription-item">
                                     <button
                                       className="prescription-nav w-100"
-                                      onClick={() => toggleStatus(item.hospitalId?._id || item?._id, (item?.kycStatus || item.hospitalId?.kycStatus) !== "approved" ? "approved" : "rejected")}
-                                      to={`/hospital-info-details/${item.hospitalId?._id || item._id}`}
+                                      onClick={() => {
+                                        const curStatus = item?.kycStatus || item.hospitalId?.kycStatus;
+                                        const nextStatus = curStatus === "approved" ? "rejected" : "approved";
+                                        toggleStatus(item.hospitalId?._id || item?._id, nextStatus);
+                                      }}
                                     >
-                                      {(item?.kycStatus || item.hospitalId?.kycStatus) !== "approved" ? "Approved" : "Rejected"}
+                                      {(item?.kycStatus || item.hospitalId?.kycStatus) === "approved" ? "Reject" : "Approve"}
                                     </button>
                                   </li>
 
