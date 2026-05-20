@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import { faBuilding, faCalendarPlus, faCheck, faCheckCircle, faClose, faFileAlt, faHouseMedical, faUser, faUserDoctor, faUserGear, faUsers, } from "@fortawesome/free-solid-svg-icons"
 import { TbGridDots } from "react-icons/tb";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getSecureApiData, updateApiData } from "../../Services/api";
 import { formatDateTime } from "../../Services/globalFunction";
@@ -12,6 +12,7 @@ import Loader from "../../Loader/Loader";
 
 
 function DoctorRequestsList() {
+    const navigate = useNavigate()
     const userId = localStorage.getItem('userId')
     const [cardData, setCardData] = useState({
         pendingApt: 0, completeApt: 0,
@@ -81,7 +82,7 @@ function DoctorRequestsList() {
                     <div className="all-profile-data-bx">
                         <div className="row mb-3">
                             <div className="col-lg-3 col-md-4 col-sm-12 mb-3">
-                                <div className="patient-nw-card">
+                                <div className="patient-nw-card cursor-pointer" onClick={() => navigate('/requests')}>
                                     <div className="patient-data-content">
                                         <span className="patient-dashboard-card"> <FontAwesomeIcon icon={faFileAlt} /> </span>
                                         <h5>{cardData?.pendingApt}</h5>
@@ -91,7 +92,7 @@ function DoctorRequestsList() {
                             </div>
 
                             <div className="col-lg-3 col-md-4 col-sm-12 mb-3">
-                                <div className="patient-nw-card patient-appointment-crd">
+                                <div className="patient-nw-card patient-appointment-crd cursor-pointer" onClick={() => navigate(`/appointment-list`)}>
                                     <div className="patient-data-content">
                                         <span className="patient-dashboard-card"> <FontAwesomeIcon icon={faHouseMedical} /> </span>
                                         <h5>{cardData?.todayApt}</h5>
@@ -101,7 +102,7 @@ function DoctorRequestsList() {
                             </div>
 
                             <div className="col-lg-3 col-md-4 col-sm-12 mb-3">
-                                <div className="patient-nw-card patient-pending-crd">
+                                <div className="patient-nw-card patient-pending-crd cursor-pointer" onClick={() => navigate('/appointment-list', { state: { statuses: ['pending', 'approved'] } })}>
                                     <div className="patient-data-content">
                                         <span className="patient-dashboard-card"> <FontAwesomeIcon icon={faCalendarPlus} /> </span>
                                         <h5>{cardData?.approveApt}</h5>
@@ -111,7 +112,7 @@ function DoctorRequestsList() {
                             </div>
 
                             <div className="col-lg-3 col-md-4 col-sm-12 mb-3">
-                                <div className="patient-nw-card patient-total-crd">
+                                <div className="patient-nw-card patient-total-crd cursor-pointer" onClick={() => navigate('/appointment-list')}>
                                     <div className="patient-data-content">
                                         <span className="patient-dashboard-card"> <FontAwesomeIcon icon={faUserGear} /> </span>
                                         <h5>{cardData?.totalApt}</h5>
@@ -121,7 +122,7 @@ function DoctorRequestsList() {
                             </div>
 
                             <div className="col-lg-3 col-md-4 col-sm-12 mb-3">
-                                <div className="patient-nw-card patient-completed-crd">
+                                <div className="patient-nw-card patient-completed-crd cursor-pointer" onClick={() => navigate('/appointment-list', { state: { statuses: ['completed'] } })}>
                                     <div className="patient-data-content">
                                         <span className="patient-dashboard-card"> <FontAwesomeIcon icon={faCheckCircle} /> </span>
                                         <h5>{cardData?.completeApt}</h5>
@@ -131,7 +132,7 @@ function DoctorRequestsList() {
                             </div>
 
                             <div className="col-lg-3 col-md-4 col-sm-12 mb-3">
-                                <div className="patient-nw-card patient-cancel-crd">
+                                <div className="patient-nw-card patient-cancel-crd cursor-pointer" onClick={() => navigate('/appointment-list', { state: { statuses: ['cancel', 'rejected'] } })}>
                                     <div className="patient-data-content">
                                         <span className="patient-dashboard-card"> <FontAwesomeIcon icon={faCheckCircle} /> </span>
                                         <h5>{cardData?.cancelApt}</h5>
@@ -140,7 +141,7 @@ function DoctorRequestsList() {
                                 </div>
                             </div>
                             <div className="col-lg-3 col-md-4 col-sm-12 mb-3">
-                                <div className="patient-nw-card  nw-hospital-staff-crd">
+                                <div className="patient-nw-card  nw-hospital-staff-crd cursor-pointer" onClick={() => navigate('/employee')}>
                                     <div className="patient-data-content">
                                         <span className="patient-dashboard-card"> <FontAwesomeIcon icon={faUsers} /> </span>
                                         <h5>{cardData?.totalStaff || 0}</h5>
@@ -149,7 +150,7 @@ function DoctorRequestsList() {
                                 </div>
                             </div>
                             <div className="col-lg-3 col-md-4 col-sm-12 mb-3">
-                                <div className="patient-nw-card  nw-hospital-patient-crd">
+                                <div className="patient-nw-card  nw-hospital-patient-crd cursor-pointer" onClick={() => navigate('/patient-history')}>
                                     <div className="patient-data-content">
                                         <span className="patient-dashboard-card"> <FontAwesomeIcon icon={faUser} /> </span>
                                         <h5>{cardData?.totalPatient || 0}</h5>
@@ -158,7 +159,7 @@ function DoctorRequestsList() {
                                 </div>
                             </div>
                             <div className="col-lg-3 col-md-4 col-sm-12 mb-3">
-                                <div className="patient-nw-card  patient-total-crd">
+                                <div className="patient-nw-card  patient-total-crd cursor-pointer" onClick={() => navigate('/requests')}>
                                     <div className="patient-data-content">
                                         <span className="patient-dashboard-card"> <FontAwesomeIcon icon={faUserDoctor} /> </span>
                                         <h5>{cardData?.totalDoctors || 0}</h5>
@@ -167,7 +168,7 @@ function DoctorRequestsList() {
                                 </div>
                             </div>
                             {cardData?.totalDepartments > 0 && <div className="col-lg-3 col-md-4 col-sm-12 mb-3">
-                                <div className="patient-nw-card patient-appointment-crd">
+                                <div className="patient-nw-card patient-appointment-crd cursor-pointer" onClick={() => navigate('/departments')}>
                                     <div className="patient-data-content">
                                         <span className="patient-dashboard-card"> <FontAwesomeIcon icon={faBuilding} /> </span>
                                         <h5>{cardData?.totalDepartments}</h5>

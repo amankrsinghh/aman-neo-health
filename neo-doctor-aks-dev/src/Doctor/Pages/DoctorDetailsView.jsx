@@ -72,10 +72,11 @@ function DoctorDetailsView({ isPatientView = false }) {
     }
 
     async function fetchPatientProfile(idToUse) {
-        if (!idToUse) return;
+        const actualId = idToUse || appointmentData?.patientId?._id;
+        if (!actualId) return;
         setLoading(true)
         try {
-            const result = await getSecureApiData(`patient/profile-detail/${idToUse}`)
+            const result = await getSecureApiData(`patient/profile-detail/${actualId}`)
             if (result.success) {
                 setDemographic(result?.demographic)
                 setMedicalHisotry(result.medicalHistory)
@@ -239,6 +240,20 @@ function DoctorDetailsView({ isPatientView = false }) {
 
     const startChatWithUser = async (user) => {
         // create or get conversation
+        sessionStorage.setItem('chatUser', JSON.stringify(user))
+        navigate('/chat')
+    };
+    const startCallWithUser = async (user) => {
+        // create or get conversation
+        sessionStorage.setItem('voiceCall', "true")
+        sessionStorage.setItem('fromAppointment', "true")
+        sessionStorage.setItem('chatUser', JSON.stringify(user))
+        navigate('/chat')
+    };
+    const startVideoCallWithUser = async (user) => {
+        // create or get conversation
+        sessionStorage.setItem('videoCall', "true")
+        sessionStorage.setItem('fromAppointment', "true")
         sessionStorage.setItem('chatUser', JSON.stringify(user))
         navigate('/chat')
     };
@@ -632,10 +647,21 @@ function DoctorDetailsView({ isPatientView = false }) {
                                                                 </div>
                                                                 <div className="flex-grow-1 new-social-list">
                                                                     <ul className="doctor-social-list">
-                                                                        {appointmentData?.status !== 'completed' && <li className="doctor-social-item">
-                                                                            <button className="doctor-social-btn" onClick={() => appointmentAction('completed')}> <FontAwesomeIcon icon={faMessage} /> </button></li>}
-                                                                        <li className="doctor-social-item"><a href="javascript:void(0)" className="doctor-social-btn" > <FontAwesomeIcon icon={faPhone} /> </a></li>
-                                                                        <li className="doctor-social-item"><a href="javascript:void(0)" className="doctor-social-btn" > <FontAwesomeIcon icon={faVideo} /> </a></li>
+                                                                        <li className="doctor-social-item">
+                                                                            <button className="doctor-social-btn" onClick={() => startChatWithUser(appointmentData)}> 
+                                                                                <FontAwesomeIcon icon={faMessage} /> 
+                                                                            </button>
+                                                                        </li>
+                                                                        <li className="doctor-social-item">
+                                                                            <button className="doctor-social-btn" onClick={() => startCallWithUser(appointmentData)}> 
+                                                                                <FontAwesomeIcon icon={faPhone} /> 
+                                                                            </button>
+                                                                        </li>
+                                                                        <li className="doctor-social-item">
+                                                                            <button className="doctor-social-btn" onClick={() => startVideoCallWithUser(appointmentData)}> 
+                                                                                <FontAwesomeIcon icon={faVideo} /> 
+                                                                            </button>
+                                                                        </li>
                                                                     </ul>
                                                                 </div>
                                                             </div>

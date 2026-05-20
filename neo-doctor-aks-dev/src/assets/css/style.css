@@ -5593,8 +5593,30 @@ input[type=number] {
   text-wrap-mode: nowrap;
 }
 
+.approved-data {
+  background: #FEB052;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #fff;
+  display: inline-block;
+  padding: 5px 10px;
+  text-wrap-mode: nowrap;
+}
+
 .cancel-data {
   background: #FF0000;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #fff;
+  display: inline-block;
+  padding: 5px 10px;
+  text-wrap-mode: nowrap;
+}
+
+.reject-data {
+  background: #EBA352;
   border-radius: 30px;
   font-weight: 600;
   font-size: 13px;
@@ -7078,4 +7100,23 @@ section {
 .rotate {
   transform: rotate(90deg);
   transition: 0.3s;
+}
+
+/* ===== Utility ===== */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/* ===== Dashboard card click feedback ===== */
+.patient-nw-card.cursor-pointer {
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.patient-nw-card.cursor-pointer:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 180, 181, 0.18);
+}
+
+.patient-nw-card.cursor-pointer:active {
+  transform: translateY(0);
 }

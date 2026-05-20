@@ -190,6 +190,50 @@ function DoctorChat({ socket, startCall }) {
         fetchConversations();
     }, []);
 
+    useEffect(() => {
+        const initChatFromStorage = async () => {
+            const storedUser = sessionStorage.getItem('chatUser');
+            if (storedUser) {
+                try {
+                    const user = JSON.parse(storedUser);
+                    const patient = user?.patientId || user;
+                    if (patient?._id) {
+                        const res = await securePostData("api/chat/create", { userId: patient._id });
+                        if (res.success) {
+                            const conversation = res.data;
+                            setSelectedChat(conversation);
+                            
+                            const msgRes = await getSecureApiData(`api/chat/messages/${conversation._id}`);
+                            setMessages(msgRes.data);
+                            
+                            if (socket) socket.emit("join-conversation", conversation._id);
+
+                            // Handle Auto-Call
+                            const isVoice = sessionStorage.getItem('voiceCall');
+                            const isVideo = sessionStorage.getItem('videoCall');
+                            if (isVoice === "true") {
+                                startCall("voice", conversation);
+                            } else if (isVideo === "true") {
+                                startCall("video", conversation);
+                            }
+                        }
+                    }
+                } catch (e) {
+                    console.error("Error initializing chat from storage", e);
+                } finally {
+                    sessionStorage.removeItem('chatUser');
+                    sessionStorage.removeItem('voiceCall');
+                    sessionStorage.removeItem('videoCall');
+                    sessionStorage.removeItem('fromAppointment');
+                }
+            }
+        };
+
+        if (chatList.length >= 0) {
+            initChatFromStorage();
+        }
+    }, [chatList.length > 0]);
+
     // ─── Open chat ────────────────────────────────────────────────
     const openChat = async (chat) => {
         setSelectedChat(chat);
@@ -404,7 +448,7 @@ function DoctorChat({ socket, startCall }) {
                                             {chatList?.map((chat) => (
                                                 <a href="#" key={chat._id}>
                                                     <div
-                                                        className="chat-usr-card nw-chat-usr-card"
+                                                        className={`chat-usr-card nw-chat-usr-card ${selectedChat?._id === chat._id ? 'active' : ''}`}
                                                         onClick={() => openChat(chat)}
                                                     >
                                                         <div className="d-flex align-items-center justify-content-between">
@@ -414,7 +458,7 @@ function DoctorChat({ socket, startCall }) {
                                                                         "/profile.png"} alt="" />
                                                                 </div>
                                                                 <div className="chat-usr-info">
-                                                                    <h5>{chat?.type == "group" ? chat.name : chat.participants[0]?.name}</h5>
+                                                                    <h5>{chat?.type == "group" ? chat.name : chat.participants.find(p => p._id !== myUserId)?.name || chat.participants[0]?.name}</h5>
                                                                     <p>{chat.lastMessage?.slice(0, 15)}</p>
                                                                 </div>
                                                             </div>
@@ -450,7 +494,11 @@ function DoctorChat({ socket, startCall }) {
                                                                 "/profile.png"} alt="" />
                                                         </div>
                                                         <div className="chat-usr-info">
-                                                            <h5 className="mb-0">{selectedChat?.type == "group" ? selectedChat?.name : selectedChat?.participants[0]?.name || "Select Chat"}</h5>
+                                                            <h5 className="mb-0">
+                                                                {selectedChat?.type === "group" 
+                                                                    ? selectedChat?.name 
+                                                                    : selectedChat?.participants?.find(p => p._id !== myUserId)?.name || selectedChat?.participants[0]?.name || "Select Chat"}
+                                                            </h5>
                                                             <p>{selectedChat?.type == "group" && selectedChat?.participants?.map(p => p.name).join(", ")}</p>
                                                         </div>
                                                     </div>

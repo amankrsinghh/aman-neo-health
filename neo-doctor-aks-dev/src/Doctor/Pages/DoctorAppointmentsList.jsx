@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import { faCheck, faCircleXmark, faFilter, faSearch } from "@fortawesome/free-solid-svg-icons"
 import { TbGridDots } from "react-icons/tb";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { getSecureApiData, securePostData, updateApiData } from "../../Services/api";
 import { useEffect, useState } from "react";
 import { formatDateTime } from "../../Services/globalFunction";
@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 import DoctorAptBookingReceipt from "./BookingReceipt";
 
 function DoctorAppointmentsList() {
-    const navigate = useNavigate()
+    const location = useLocation()
     const userId = localStorage.getItem('userId')
     const [appointmentRequest, setAppintmentRequest] = useState([])
     const [loading, setLoading] = useState(false)
@@ -23,7 +23,7 @@ function DoctorAppointmentsList() {
     const [startDate, setStartDate] = useState(null)
     const [endDate, setEndDate] = useState(null)
     const [search, setSearch] = useState('')
-    const [status, setStatus] = useState([])
+    const [status, setStatus] = useState(location.state?.statuses || [])
     const [activeApt, setActiveApt] = useState(null)
     const [pdfLoading, setPdfLoading] = useState(null)
     const [isSaving, setIsSaving] = useState(false)
@@ -48,7 +48,7 @@ function DoctorAppointmentsList() {
         if (userId) {
             getAppointmentData()
         }
-    }, [userId, currentPage])
+    }, [userId, currentPage, status])
     const handleStatusChange = (value) => {
         setStatus((prev) =>
             prev.includes(value)
@@ -57,7 +57,7 @@ function DoctorAppointmentsList() {
         );
     };
     const handleReset = () => {
-        setStatus['']
+        setStatus([])
         setStartDate(null)
         setEndDate(null)
         getAppointmentData()
@@ -221,7 +221,7 @@ function DoctorAppointmentsList() {
                                                 <ul className="filtring-list">
                                                     <h6>Status</h6>
 
-                                                    {["pending", "completed", "canceled"].map((item) => (
+                                                    {["pending", "approved", "completed", "cancel", "rejected"].map((item) => (
                                                         <li key={item}>
                                                             <div className="accordion-body-concet">
                                                                 <input
@@ -324,15 +324,16 @@ function DoctorAppointmentsList() {
                                                             </td>
                                                             <td>{formatDateTime(item?.date)}</td>
                                                             <td>
-                                                                {item?.status == "pending" && <span className="pending-data">Pending </span>}
-                                                                {item?.status == "cancel" &&
-                                                                    <span className="danger-title">Cancel appointment</span>
+                                                                {item?.status?.toLowerCase() === "pending" && <span className="pending-data">Pending </span>}
+                                                                {item?.status?.toLowerCase() === "approved" && <span className="approved-data">Approved </span>}
+                                                                {(item?.status?.toLowerCase() === "cancel" || item?.status?.toLowerCase() === "canceled" || item?.status?.toLowerCase() === "cancelled") &&
+                                                                    <span className="cancel-data">Cancelled </span>
                                                                 }
-                                                                {item?.status == "rejected" &&
-                                                                    <span className="danger-title">Rejected appointment</span>
+                                                                {(item?.status?.toLowerCase() === "rejected" || item?.status?.toLowerCase() === "reject") &&
+                                                                    <span className="reject-data">Rejected </span>
                                                                 }
-                                                                {item?.status == 'completed' && <span className="complete-data">Completed </span>}
-                                                                {(item?.status !== 'completed' && item?.status !== "rejected" && item?.status !== "cancel" && item?.status !== "pending")
+                                                                {item?.status?.toLowerCase() === 'completed' && <span className="complete-data">Completed </span>}
+                                                                {(item?.status?.toLowerCase() !== 'completed' && item?.status?.toLowerCase() !== "rejected" && item?.status?.toLowerCase() !== "reject" && item?.status?.toLowerCase() !== "cancel" && item?.status?.toLowerCase() !== "canceled" && item?.status?.toLowerCase() !== "cancelled" && item?.status?.toLowerCase() !== "pending" && item?.status?.toLowerCase() !== "approved")
                                                                     && <span className="complete-data text-capitalize">{item?.status} </span>}
                                                             </td>
                                                             <td>
