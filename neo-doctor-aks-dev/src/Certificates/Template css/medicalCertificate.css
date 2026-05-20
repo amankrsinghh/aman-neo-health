@@ -1,0 +1,105 @@
+
+
+.mc-wrapper {
+  min-height: 100vh;
+}
+
+.mc-a4 {
+  width: 794px;
+  min-height: 1123px;
+  font-family: 'Inter', sans-serif;
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* PRIMARY COLOR */
+.text-teal {
+  color: #0F9D9A;
+}
+
+.bg-teal {
+  background-color: #0F9D9A;
+}
+
+/* CERTIFICATE BOX */
+.certificate-box {
+  margin: 30px;
+  padding: 40px 60px;
+  border: 2px solid #0F9D9A;
+  border-radius: 12px;
+  position: relative;
+  background: #fff;
+}
+
+/* TITLE */
+.title {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: #777;
+}
+
+/* PATIENT NAME */
+.patient-name {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 10px 0;
+}
+
+/* TEXT */
+.description {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+/* QR */
+.qr-box {
+  margin-top: 40px;
+}
+
+.qr-placeholder {
+  width: 90px;
+  height: 90px;
+  background: #ddd;
+  margin: auto;
+  border-radius: 6px;
+}
+
+.verify-link {
+  color: #0F9D9A;
+  font-size: 13px;
+}
+
+/* WATERMARK */
+.watermark {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: rgba(15, 157, 154, 0.05);
+  border-radius: 50%;
+  top: 40%;
+  left: 30%;
+  z-index: 0;
+}
+
+/* FOOTER */
+.footer-bar {
+  background: #0F9D9A;
+}
+
+/* PRINT */
+@media print {
+  body {
+    background: white;
+  }
+
+  .mc-a4 {
+    width: 100%;
+    box-shadow: none;
+  }
+}

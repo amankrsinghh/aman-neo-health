@@ -1,0 +1,122 @@
+/* headre */
+.dv-navbar-light-box {
+    background-color: #fff;
+
+
+}
+
+.dv-navbar-light-box .navbar-brand img {
+    width: 100px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.dv-navbar-light-box .navbar-nav .nav-link {
+    font-weight: 500;
+    font-size: 16px;
+    text-transform: capitalize;
+    transition: 0.2s ease;
+    text-align: start;
+    color: #052F59;
+}
+
+.dv-navbar-light-box .navbar-nav .nav-link:hover {
+    color: #000;
+}
+
+.dv-navbar-light-box .nw-address-btn {
+    display: inline-block;
+    /* width: 170px;
+  max-width: 150px; */
+    /* height: 45px; */
+    /* line-height: 45px; */
+    background-color: #fff;
+    text-align: center;
+    border-radius: 8px;
+    color: #052F59;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 10px;
+}
+
+.dv-navbar-light-box {
+    padding: 2px 0;
+}
+
+.navbar {
+    position: relative;
+    transition: all 0.35s ease;
+}
+
+.navbar.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+    background: #fff;
+    animation: slideDown 0.35s ease;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+}
+.for-institutions {
+    width: 300px !important;
+}
+.dropdown-item.active, .dropdown-item:active{
+    background-color: #052F59 !important;
+    color: white !important;
+}
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+.landing-thm-btn {
+    position: relative;
+    display: inline-block;
+    padding: 10px 26px;
+    background: #111C30;
+    /* border-radius: 30px; */
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    text-align: center;
+    box-shadow: 0px 0px 30px 0px #00000012;
+    overflow: hidden;
+    z-index: 1;
+}
+
+/* Hover layer */
+.landing-thm-btn::before {
+    content: "";
+    position: absolute;
+    left: -100%;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: #123479;
+    z-index: -1;
+    transition: all 0.4s ease;
+}
+
+.landing-thm-btn:hover::before {
+    left: 0;
+}
+
+.landing-thm-btn:hover {
+    color: #fff;
+}
+
+.landing-thm-btn.outline {
+    background-color: transparent;
+    border: 1px solid #111C30;
+    color: #111C30;
+}
+
+.landing-thm-btn.outline:hover {
+    color: #fff;
+}

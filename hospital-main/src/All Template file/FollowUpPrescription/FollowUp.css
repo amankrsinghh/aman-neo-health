@@ -1,0 +1,61 @@
+.fp-a4 {
+  width: 794px;
+  min-height: 1123px;
+  font-family: 'Inter', sans-serif;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.bg-teal {
+  background-color: #0F9D9A;
+}
+
+/* VITAL BOX */
+.vital-box {
+  flex: 1;
+  min-width: 140px;
+  background: #f5f5f5;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.vital-box .label {
+  font-size: 11px;
+  color: #777;
+}
+
+.vital-box .value {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.vital-box .unit {
+  font-size: 11px;
+  color: #999;
+}
+
+/* TABLE */
+.fp-table td,
+.fp-table th {
+  padding: 8px 6px;
+}
+
+/* SECTION TITLE */
+.section-title {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+/* FOOTER */
+.footer-bar {
+  background: #0F9D9A;
+}
+
+/* PRINT */
+@media print {
+  .fp-a4 {
+    width: 100%;
+    box-shadow: none;
+  }
+}

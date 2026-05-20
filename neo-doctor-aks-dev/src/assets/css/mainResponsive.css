@@ -1,0 +1,604 @@
+@media(min-width:1920px) {
+  .container {
+    max-width: 1600px;
+  }
+}
+
+@media (max-width: 1699px) {
+
+
+
+  .pres-delete-bx::after {
+    content: "";
+    position: absolute;
+    right: 7rem;
+    bottom: 0;
+    height: 100%;
+
+    border-left: 0.6px dashed #052F59;
+
+  }
+
+  .nw-item-bx {
+    margin-right: 4rem;
+  }
+
+  .container {
+    max-width: 1320px;
+  }
+
+}
+
+@media (max-width: 1199px) {
+  .time-row .time-col {
+    flex: 0 0 20%;
+    max-width: 20%;
+  }
+
+  .pres-delete-bx::after {
+    content: "";
+    position: absolute;
+    right: 5.5rem;
+    bottom: 0;
+    height: 100%;
+
+    border-left: 0.6px dashed #052F59;
+
+  }
+
+
+}
+
+@media (max-width: 991px) {
+
+  /* reponsive header*/
+  .navbar-light-box .navbar-toggler {
+    color: black;
+  }
+
+  .navbar-light-box .navbar-toggler:focus {
+    box-shadow: none !important;
+  }
+
+ .navbar-light-box .collapse:not(.show) {
+    display: block !important;
+    height: 100% !important;
+    visibility: visible !important;
+  }
+
+ 
+ .navbar-light-box .collapsing {
+    height: 100% !important;
+    transition: none !important;
+  }
+
+  #navbarSupportedContent {
+    position: fixed !important;
+    top: 0;
+    left: -300px;
+    width: 300px;
+    height: 100vh;
+    background: #fff;
+    padding: 20px 15px;
+    /* box-shadow: 2px 0 12px rgba(0, 0, 0, 0.18); */
+    transition: left 0.40s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 9999;
+    overflow-y: auto;
+  }
+
+  #navbarSupportedContent.show {
+    left: 0;
+  }
+
+  .mobile-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(2px);
+    z-index: 9998;
+    animation: fadeIn 0.35s ease;
+  }
+
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  .mobile-close-btn {
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    text-align: right;
+    color: #333;
+    padding-right: 5px;
+  }
+
+  .mobile-close-btn svg {
+    transition: transform 0.25s ease;
+  }
+
+
+
+  .navbar-toggler {
+    border: none;
+    z-index: 10000;
+  }
+
+  /* reponsive header*/
+
+
+
+
+  .tp-breadcrum-section {
+    padding: 25px 0;
+  }
+
+  .time-row .time-col {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+
+  .Doctor-Detailsseaction-contant {
+    flex-direction: column;
+  }
+
+  .Doctor-Detailsseaction-contant-img img {
+    width: 100%;
+    object-fit: scale-down;
+  }
+
+  .doctor-mega-card {
+    flex-wrap: wrap;
+  }
+
+  .doctor-pic-bx {
+    flex-grow: 1;
+  }
+
+  .doctor-pic-bx img {
+    width: 100%;
+  }
+
+  .error-picture-bx img {
+    height: 200px;
+  }
+
+  .blog-details-picture img {
+    height: 250px;
+  }
+
+  .heading-grad {
+    font-size: 30px !important;
+  }
+
+  .specialty-list {
+    flex-direction: column;
+    align-items: start;
+  }
+
+  .contact-info-card {
+    padding: 15px;
+  }
+
+  .contact-awesome-icon {
+    width: 75px;
+    height: 75px;
+    line-height: 75px;
+    font-size: 25px;
+  }
+
+  .contact-info-card h4 {
+    font-size: 18px;
+  }
+
+  .contact-info-card p {
+    font-size: 16px;
+  }
+
+  .employee-tabs .nav-tabs {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .employee-tabs .nav-tabs {
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+    text-wrap-mode: nowrap;
+  }
+
+  .profile-tp-header .heading-grad {
+    font-size: 20px !important;
+  }
+
+  .pres-delete-bx::after {
+    display: none;
+  }
+
+  .appointment-info-parent-bx {
+    flex-direction: column;
+  }
+
+  .appointment-info-sub-bx {
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+  }
+
+  .appointment-info-sub-bx img {
+    width: 100%;
+  }
+
+  .appointment-info-mega-bx {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .my-appointment-info-card {
+    padding: 15px;
+  }
+
+  .not-accept-title {
+    text-align: start;
+  }
+
+  .doctor-social-btn {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 15px;
+  }
+
+  .nw-vertical-btn {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 15px;
+  }
+
+  .all-profile-data-bx {
+    padding: 15px;
+  }
+
+
+
+  .pending-bx {
+    text-wrap-mode: nowrap;
+  }
+
+  .prescriptin-content {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .doctor-detailsseaction-contant {
+    flex-wrap: wrap;
+  }
+
+  .near-doctor-card {
+    gap: 10px;
+  }
+
+  .near-doctor-card .doctor-img {
+    width: 75px;
+    height: 75px;
+  }
+
+  .nw-item-bx {
+    margin-right: 5rem;
+  }
+
+  .doctor-review-bx {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .slot-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .admin-pisture-bx img {
+    min-height: 350px;
+  }
+
+  .login-back-btn {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+
+  }
+
+  .nw-mega-table{
+  table-layout: auto !important;
+  border-collapse: collapse;
+}
+
+.nw-search-dropdown{
+  width: 250px !important;
+    left: -155px !important;
+}
+
+.sallr-drop-box{
+  left: 0px !important;
+  
+}
+
+.nw-location-bx{
+  left: 0px !important;
+}
+
+/* .profile-card-box{
+  width: 200px !important;
+} */
+
+.nw-arrow-bx{
+  justify-content: end;
+}
+
+.ambulance-booking-bx{
+  padding: 15px;
+}
+
+.ambulance-tracking-bx{
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ambulance-mega-bx{
+  flex-wrap: wrap;
+    gap: 10px;
+    /* flex-direction: column; */
+    align-items: start;
+}
+
+.ambulance-location{
+  height: 350px;
+}
+
+.about-us-section{
+  padding: 25px 0;
+}
+
+.contact-us-section{
+    padding: 25px 0;
+}
+
+.video-call-section{
+   padding: 25px 0;
+}
+
+.nw-form-container{
+  overflow-y: visible;
+ max-height: none;
+}
+
+.search-wrapper{
+  margin-top: 20px;
+  padding-bottom: 0px;
+}
+
+.baner{
+  padding-top: 50px;
+}
+
+.baner-box .baner-content h2{
+  font-size: 48px;
+}
+
+.doctor-services-card{
+  padding: 20px;
+}
+
+.download-section .download-content .download-content-text {
+  padding-top: 20px;
+  padding-left: 20px;
+}
+
+.download-section .download-content .download-content-img{
+  padding-right: 0px;
+}
+
+.download-section .download-content{
+  padding-top: 50px;
+}
+
+.download-section .download-content .download-content-text h3{
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.howitworks-contents-box{
+  align-items: start;
+}
+
+.book-ambulance-setion{
+  height: auto;
+  padding: 20px;
+}
+
+.book-ambulance-title p{
+  font-size: 16px;
+  text-align: center;
+}
+
+.ambulance-trace-picture-bx::after{
+  display: none;
+}
+
+.book-ambulance-title h4{
+  font-size: 38px;
+}
+
+.ambulance-book-bx{
+  text-align: center;
+
+}
+
+.ambulance-trace-picture-bx img{
+  width: 100%;
+  height: 100%;
+}
+
+.ambulance-trace-picture-bx{
+  padding-top: 25px;
+}
+
+.baner-content-img .hero-content .doctor-box{
+  /* position: absolute;
+  right: 0px;
+  bottom: -160px !important;
+    z-index: 9; */
+    display: none;
+}
+
+.baner-content-img .hero-content .checkup-badge{
+      position: absolute;
+    bottom: 0px;
+    z-index: 9;
+}
+
+.ambulance-hp-section{
+  padding: 25px 0;
+}
+
+.hospital-section{
+   padding: 25px 0;
+}
+
+.lab-categoreis-section{
+   padding: 25px 0;
+  }
+  
+  .categories-section{
+  padding: 25px 0;
+
+}
+
+.blog-section{
+  padding: 25px 0;
+}
+
+.howitworks-contents-box{
+  padding-top: 20px;
+}
+
+.navbar-light-box .navbar-brand img {
+    width: 80px;
+    height: 45px;
+    object-fit: contain;
+}
+
+.howitworks-contents-box .howitworks-contents-box-icon{
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+}
+
+.howitworks-contents-box-icon img{
+  width: 20px;
+  height: 20px;
+}
+
+
+
+
+}
+
+@media (max-width: 767px) {
+  .time-row .time-col {
+    flex: 0 0 33.33%;
+    max-width: 33.33%;
+  }
+
+  .capture-bx img {
+    height: 300px;
+  }
+
+  .hospital-picture-bx img {
+    height: 250px;
+  }
+
+  /* .heading-grad {
+    font-size: 20px !important;
+  } */
+
+  /* .nw-thm-btn{
+      width: 100%;
+    } */
+
+  .nw-item-bx {
+    margin-right: 0rem;
+  }
+
+    .doctor-mega-type-bx{
+    flex-direction: column;
+  }
+  
+  .doctor-type-content{
+    flex-direction: column;
+
+  }
+
+  .nw-content-type{
+    text-align: center;
+  }
+
+  .nw-result-bx{
+    padding: 4px 8px 4px 18px;
+    font-size: 14px;
+  }
+
+  .footer-bottom{
+    justify-content: center;
+  }
+
+  .doctor-detailsseaction-contant-img{
+    flex-grow: 1;
+  }
+
+  .doctor-detailsseaction-contant-img img{
+    width: 100%;
+    height: 300px;
+  }
+
+  .contentcardicon{
+    flex-direction: column;
+  }
+
+    .nw-press-report-bx{
+    flex-wrap: wrap;
+     justify-content: end;
+    gap: 0;
+    align-items: end;
+  }
+
+  .nw-press-delete-bx::after{
+    display: none;
+  }
+
+  .vaccine-btn{
+    width: 100%;
+  }
+
+
+}
+
+@media (max-width: 576px) {
+  .time-row .time-col {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+
+  .appoint-left-title-bx h5 {
+    font-size: 13px !important;
+  }
+
+  .slot-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

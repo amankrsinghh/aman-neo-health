@@ -1,0 +1,197 @@
+/* footer */
+.ldp-footer-section {
+    background: #FFFFFF;
+    padding: 50px 0 20px 0;
+}
+
+.footer-logo {
+    width: 180px;
+    object-fit: contain;
+}
+
+.landing-footer-content h6 {
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 25px;
+    color: #052F59;
+    margin-bottom: 0;
+}
+
+.landing-footer-content p {
+    font-weight: 400;
+    ;
+    font-size: 16px;
+    line-height: 25px;
+    margin-bottom: 0;
+
+}
+
+.footer-text {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 25px;
+    color: #4D667E;
+
+}
+
+.doctor-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+
+
+.doctor-items {
+    background: #F8FAFC;
+    border: 1px solid #EDF0F7;
+    backdrop-filter: blur(14.899999618530273px);
+    display: inline-block;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 100%;
+    color: #4D667E;
+    padding: 10px 20px 10px 35px;
+    border-radius: 30px;
+
+}
+
+.no-add-icon {
+    position: relative;
+}
+
+.no-add-icon::after {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: -20px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #00BDA9;
+}
+
+.doctor-items:hover {
+    background: #ecf1f7;
+}
+
+.clinical-notice-bx {
+    background: #F8FAFC;
+    border: 1px solid #EDF0F7;
+    box-shadow: 0px 0px 30px 0px #0000000D;
+    border-radius: 20px;
+    padding: 30px 20px;
+    margin: 20px 0;
+}
+
+.clinical-notice-bx h5 {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 2px;
+    color: #00BDA9;
+    text-transform: uppercase;
+}
+
+.clinical-notice-bx p {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 25px;
+    letter-spacing: 0%;
+    color: #4D667E;
+    margin-bottom: 0;
+
+}
+
+.dv-social-icon-btn {
+    color: #4D667E;
+    font-size: 20px;
+}
+
+.dv-social-icon-btn:hover {
+    color: #052F59 !important;
+}
+
+.contact-color {
+    color: #00BDA9;
+}
+
+
+
+.footer-social {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+
+.dv-footer-item .dv-footer-nav-link {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 25px;
+    color: #4D667E;
+    text-align: start;
+    /* text-transform: capitalize; */
+    cursor: pointer;
+
+
+}
+
+.footer-links .dv-footer-item {
+    padding: 10px 0;
+    color: var(--first-color);
+}
+
+.footer-links .dv-footer-item .dv-footer-nav-link:hover {
+    color: #0E559C;
+    text-decoration: underline !important;
+}
+
+
+.footer-contact {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    color: #052F59;
+}
+
+.footer-contact-box {
+    align-items: start;
+}
+
+.footer-bottom {
+    font-size: 16px;
+    color: #0C2E3F;
+    border-top: 1px solid #00B4B533;
+    padding-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.footer-bottom .footer-link {
+    color: #052F59;
+}
+.footer-badges {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.badge-pill {
+  background: #F8FAFC;
+    border: 1px solid #EDF0F7;
+    backdrop-filter: blur(14.899999618530273px);
+    display: inline-block;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 100%;
+    color: #4D667E;
+    padding: 10px 20px 10px 10px;
+    border-radius: 30px;
+    margin: 0 5px;
+}

@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NeoHealthCard - Hospital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <style>
+    .chat-container {
+      max-height: 100vh;
+      overflow-y: auto;
+    }
+
+    .call-modal {
+      position: fixed;
+      inset: 0;
+      background: #0f172a;
+      color: #fff;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .call-header {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .call-header h4 {
+      margin-bottom: 5px;
+    }
+
+    .call-body {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* VIDEO */
+    .remote-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .local-video {
+      position: absolute;
+      bottom: 100px;
+      right: 20px;
+      width: 120px;
+      height: 160px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 2px solid #fff;
+    }
+
+    /* VOICE CALL */
+    .voice-call-ui {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .caller-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin-bottom: 20px;
+    }
+
+    .voice-wave {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 4px solid #38bdf8;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(0.8);
+        opacity: 0.5;
+      }
+
+      50% {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+      }
+    }
+
+    /* FOOTER */
+    .call-footer {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 25px;
+    }
+
+    .btn {
+      padding: 14px 25px;
+      border-radius: 50px;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .accept {
+      background: #22c55e;
+      color: #fff;
+    }
+
+    .reject,
+    .end {
+      background: #ef4444;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
+</body>
+
+</html>

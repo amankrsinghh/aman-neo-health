@@ -1,0 +1,212 @@
+import { useState,useEffect } from "react";
+import PersonalInfo from "./PersonalInfo";
+import ProfessionalInfo from "./ProfessionalInfo";
+import EmploymentInfo from "./EmploymentInfo";
+import AccessInfo from "./AccessInfo";
+import { NavLink } from "react-router-dom";
+import api from "../../api/api";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+
+
+
+function EditDoctor() {
+    const { id } = useParams();
+
+    const navigate = useNavigate();
+    
+    const initialStaffState = {
+  personalInfo: {},
+  professionalInfo: {},
+  employmentInfo: {},
+  accessInfo: {},
+  profileImage: null
+};
+
+
+ const [staffData, setStaffData] = useState({
+    personalInfo: {},
+    professionalInfo: {},
+    employmentInfo: {},
+    accessInfo: {},
+    profileImage: null
+  });
+
+  const updateSection = (section, data) => {
+    setStaffData(prev => ({
+      ...prev,
+      [section]: { ...prev[section], ...data }
+    }));
+  };
+
+  const submitStaff = async () => {
+  const formData = new FormData();
+
+  if (staffData.personalInfo?.profileImage instanceof File) {
+    formData.append("profileImage", staffData.personalInfo.profileImage);
+  }
+
+  staffData.professionalInfo?.certificates?.forEach(cert => {
+    if (cert.file instanceof File) {
+      formData.append("certificates", cert.file);
+    }
+  });
+
+  const cleanData = {
+  ...staffData,
+  personalInfo: {
+    ...staffData.personalInfo,
+    profileImage: undefined
+  },
+  professionalInfo: {
+    ...staffData.professionalInfo,
+    certificates: staffData.professionalInfo.certificates.map(c => ({
+      name: c.name   // ✅ KEEP SAME AS STATE
+    }))
+  }
+};
+
+  formData.append("data", JSON.stringify(cleanData));
+
+  if (id) {
+    await api.put(`/hospital-doctor/${id}`, formData);
+    toast.success("Staff Updated Successfully");
+  } else {
+    await api.post("/hospital-doctor/create", formData);
+    toast.success("Staff Created Successfully");
+  }
+
+  navigate("/doctor");
+};
+
+
+useEffect(() => {
+  if (!id) return;
+  api.get(`/hospital-doctor/get-by-id/${id}`).then(res => {
+    setStaffData(res.data.data);
+  });
+}, [id]);
+
+
+
+
+
+  return (
+    <div className="main-content flex-grow-1 p-3 overflow-auto">
+      
+      {/* Header */}
+      <div className="row ">
+                    <div className="d-flex align-items-center justify-content-between">
+                        <div>
+                            <h3 className="innr-title mb-2">Add New Staff</h3>
+                            <div className="admin-breadcrumb">
+                                <nav aria-label="breadcrumb">
+                                    <ol className="breadcrumb custom-breadcrumb">
+                                        <li className="breadcrumb-item">
+                                            <NavLink to="/dashboard" className="breadcrumb-link">
+                                                Dashboard
+                                            </NavLink>
+                                        </li>
+                                        <li className="breadcrumb-item">
+                                            <NavLink to="/staff-management"  className="breadcrumb-link">Staff</NavLink>
+                                        </li>
+                                        <li
+                                            className="breadcrumb-item active"
+                                            aria-current="page"
+                                        >
+                                           Add New Staff
+                                        </li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+      {/* Tabs */}
+      <ul
+        className="nav nav-tabs gap-3 ps-2"
+        role="tablist"
+      >
+        <li className="nav-item">
+          <a
+            className="nav-link active"
+            data-bs-toggle="tab"
+            href="#personal"
+            role="tab"
+          >
+            Personal Info
+          </a>
+        </li>
+
+        <li className="nav-item">
+          <a
+            className="nav-link"
+            data-bs-toggle="tab"
+            href="#professional"
+            role="tab"
+          >
+            Professional
+          </a>
+        </li>
+
+        <li className="nav-item">
+          <a
+            className="nav-link"
+            data-bs-toggle="tab"
+            href="#employment"
+            role="tab"
+          >
+            Employment
+          </a>
+        </li>
+
+        <li className="nav-item">
+          <a
+            className="nav-link"
+            data-bs-toggle="tab"
+            href="#access"
+            role="tab"
+          >
+            Access
+          </a>
+        </li>
+      </ul>
+
+      {/* Tab Content */}
+      <div className="tab-content mt-4">
+            <div className="tab-pane fade show active" id="personal">
+                <PersonalInfo
+                    staffData={staffData}
+                    setStaffData={setStaffData}
+                />
+                </div>
+
+                <div className="tab-pane fade" id="professional">
+                <ProfessionalInfo
+                    staffData={staffData}
+                    setStaffData={setStaffData}
+                />
+                </div>
+
+                <div className="tab-pane fade" id="employment">
+                <EmploymentInfo
+                    staffData={staffData}
+                    setStaffData={setStaffData}
+                />
+                </div>
+
+                <div className="tab-pane fade" id="access">
+                <AccessInfo
+                    staffData={staffData}
+                    setStaffData={setStaffData}
+                    onFinalSubmit={submitStaff}
+                />
+            </div>
+      </div>
+    </div>
+  );
+}
+
+export default EditDoctor;

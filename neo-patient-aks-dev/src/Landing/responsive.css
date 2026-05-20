@@ -1,0 +1,480 @@
+@media(min-width:1920px) {
+  .container {
+    max-width: 1680px;
+  }
+}
+
+@media (max-width: 1699px) {}
+
+@media (max-width: 1199px) {}
+
+@media (max-width: 991px) {
+
+  .dv-navbar-light-box .navbar-toggler {
+    color: black;
+  }
+
+  .dv-navbar-light-box .navbar-toggler:focus {
+    box-shadow: none !important;
+  }
+
+  .dv-navbar-light-box .collapse:not(.show) {
+    display: block !important;
+    height: 100% !important;
+    visibility: visible !important;
+  }
+
+
+  .dv-navbar-light-box .collapsing {
+    height: 100% !important;
+    transition: none !important;
+  }
+
+  #navbarDvSupportedContent {
+    position: fixed !important;
+    top: 0;
+    left: -300px;
+    width: 300px;
+    height: 100vh;
+    background: #fff;
+    padding: 20px 15px;
+    transition: left 0.40s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 9999;
+    overflow-y: auto;
+  }
+
+  #navbarDvSupportedContent.show {
+    left: 0;
+  visibility: visible;
+  }
+
+  .dv-mobile-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(2px);
+    z-index: 9998;
+    animation: fadeIn 0.35s ease;
+     /* animation: slideDown 0.35s ease; */
+
+  }
+
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+
+  .mobile-close-btn {
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    text-align: right;
+    color: #333;
+    padding-right: 5px;
+  }
+
+  .mobile-close-btn svg {
+    transition: transform 0.25s ease;
+  }
+
+
+
+  .navbar-toggler {
+    border: none;
+    z-index: 10000;
+  }
+
+  /* reponsive header*/
+
+  .landing-thm-btn {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .nw-landing-thm-btn {
+    padding: 10px 15px;
+    font-size: 14px;
+  }
+
+  .neo-ai-list {
+    grid-template-columns: auto;
+  }
+
+  .global-title h2 {
+    font-size: 38px;
+    line-height: 40px;
+  }
+
+  .home-section {
+    min-height: auto;
+    padding: 40px 0 60px 0px;
+  }
+
+
+  .center-card {
+    width: 175px;
+    min-height: auto;
+  }
+
+  .center-card h4 {
+    font-size: 10px;
+  }
+
+  .center-card h3 {
+    font-size: 12px;
+  }
+
+  .center-card p {
+    font-size: 12px;
+  }
+
+  .label {
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  .chip {
+    margin-top: 0px;
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  .bottom-left {
+    left: -10px;
+    bottom: 75px;
+  }
+
+  .bottom-right {
+    right: 10px;
+    bottom: 75px;
+  }
+
+  .right {
+    right: -10px;
+    top: 30%;
+    transform: translateY(-50%);
+  }
+
+  .dv-how-it-work-section {
+    padding: 40px 0;
+  }
+
+  .one-living-section {
+
+    padding: 40px 0;
+  }
+
+  .eco-system-section {
+    padding: 40px 0;
+  }
+
+  .neo-edge-section {
+    padding: 40px 0;
+  }
+
+  .neo-middle-ware-section {
+    padding: 40px 0;
+  }
+
+  .product-module-section {
+    padding: 40px 0;
+  }
+
+  .why-it-exsits-section {
+    padding: 40px 0;
+  }
+
+  .neo-ai-section {
+    padding: 40px 0;
+  }
+
+  .security-trust-section {
+    padding: 40px 0;
+  }
+
+  .neo-title-heading h5 {
+    font-size: 24px;
+    padding: 8px 0;
+  }
+
+  .footer-links .dv-footer-item{
+    padding: 5px 0;
+  }
+
+  .dv-innr-title{
+    margin-bottom: 10px;
+  }
+
+  .standardize-bx{
+    gap: 10px;
+  }
+
+  .hospital-global-item{
+    padding: 8px 12px;
+  }
+
+  .dv-navbar-light-box {
+    padding: 5px 0;
+}
+
+
+
+
+  .search-wrapper {
+    margin-top: 20px;
+    padding-bottom: 0px;
+  }
+
+  .baner {
+    padding-top: 50px;
+  }
+
+  .baner-box .baner-content h2 {
+    font-size: 48px;
+  }
+
+  .doctor-services-card {
+    padding: 20px;
+  }
+
+  .download-section .download-content .download-content-text {
+    padding-top: 20px;
+    padding-left: 20px;
+  }
+
+  .download-section .download-content .download-content-img {
+    padding-right: 0px;
+  }
+
+  .download-section .download-content {
+    padding-top: 50px;
+  }
+
+  .download-section .download-content .download-content-text h3 {
+    font-size: 32px;
+    margin-bottom: 20px;
+  }
+
+  .howitworks-contents-box {
+    align-items: start;
+  }
+
+  .book-ambulance-setion {
+    height: auto;
+    padding: 20px;
+  }
+
+  .book-ambulance-title p {
+    font-size: 16px;
+    text-align: center;
+  }
+
+  .ambulance-trace-picture-bx::after {
+    display: none;
+  }
+
+  .book-ambulance-title h4 {
+    font-size: 38px;
+  }
+
+  .ambulance-book-bx {
+    text-align: center;
+
+  }
+
+  .ambulance-trace-picture-bx img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .ambulance-trace-picture-bx {
+    padding-top: 25px;
+  }
+
+  .baner-content-img .hero-content .doctor-box {
+    /* position: absolute;
+  right: 0px;
+  bottom: -160px !important;
+    z-index: 9; */
+    display: none;
+  }
+
+  .baner-content-img .hero-content .checkup-badge {
+    position: absolute;
+    bottom: 0px;
+    z-index: 9;
+  }
+
+  .ambulance-hp-section {
+    padding: 25px 0;
+  }
+
+  .hospital-section {
+    padding: 25px 0;
+  }
+
+  .lab-categoreis-section {
+    padding: 25px 0;
+  }
+
+  .categories-section {
+    padding: 25px 0;
+
+  }
+
+  .blog-section {
+    padding: 25px 0;
+  }
+
+  .howitworks-contents-box {
+    padding-top: 20px;
+  }
+
+  .dv-navbar-light-box .navbar-brand img {
+    width: 80px;
+    height: 45px;
+  }
+
+  .footer-bottom{
+    justify-content: center;
+  }
+
+
+
+}
+
+@media (max-width: 767px) {
+
+
+  .hero-right {
+    max-width: 300px;
+    height: 300px;
+    margin-top: 40px;
+  }
+
+  .landing-thm-btn {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .nw-landing-thm-btn {
+    padding: 10px 14px;
+    font-size: 12px;
+  }
+
+  .landing-lg-thm-btn {
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+
+  .dv-footer-item .dv-footer-nav-link {
+    font-size: 14px;
+  }
+
+  .footer-links {
+    gap: 8px;
+  }
+
+  .global-title h2 {
+    font-size: 32px;
+    line-height: 32px;
+  }
+
+  .hospital-global-list {
+    gap: 7px;
+  }
+
+  .medical-record-title p{
+    line-height: 20px;
+  }
+
+  .secure-built-bx{
+    padding: 15px 10px;
+  }
+
+  .product-modules-bx h6{
+    margin-bottom: 5px;
+  }
+
+
+   * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0,0,0,0.25) transparent;
+  }
+
+   ::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+  }
+
+  .hp-create-bx{
+    gap: 5px !important;
+  }
+
+
+}
+
+@media (max-width: 567px) {
+
+  .hero-right {
+    max-width: 275px;
+    height: 275px;
+    margin-top: 40px;
+  }
+
+  .bottom {
+    bottom: 5px;
+    left: 45%;
+    transform: translateX(-50%);
+    z-index: 1;
+  }
+
+  .bottom-left {
+    left: -20px;
+    bottom: 75px;
+  }
+
+  .left {
+    left: -20px;
+    top: 30%;
+    transform: translateY(-50%);
+    z-index: 1;
+  }
+
+  .top {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+  }
+
+  .right {
+    right: -15px;
+    top: 30%;
+    transform: translateY(-50%);
+  }
+
+  .bottom-right {
+    right: -10px;
+    bottom: 75px;
+  }
+
+  .center-card {
+    padding: 10px;
+  }
+}

@@ -1,0 +1,101 @@
+import express from "express";
+import auth from "../../middleware/auth.js";
+
+import {
+  GetDoctor,
+  addExistingDoctorToHospital,
+  searchUsers,
+  saveFcmToken,
+  getNotification,
+  deleteNotification,
+  deleteOneNotification,
+  addPermission,
+  updatePermission,
+  deletePermission,
+  getAllPermission,
+  getProfile,
+  allowedChat,
+  createGroup,
+  followUpQuestionController,
+  askQuestionController,
+  getAskQuestionController,
+  getGeneralQuestionController,
+  createChatSessionController,
+  getChatSessionsController,
+  getUserDataController,
+  addOrUpatePaymentInfo,
+  assignPermission,
+  doctorAppointmentInvoice,
+  prescriptionPdf,
+  getTestCatAndSub,
+  getSubTestCatById,
+  getMyTestCat, labSamplePdf,
+  getSubTestCatDataById,
+  bedInvoicePdf,
+  labReportPdf,
+  opdInvoicePdf, doctorEmpanelmentPdf,
+  pharmacyInvoicePdf,
+  labOrderPdf,
+  dischargeSummaryPdf,
+  consentLetterPdf,
+  labInvoicePdf,
+  pharmacyReturnPdf,
+  searchAllUsers
+} from "../../controller/Hospital/commanController.js";
+import authMiddleware from "../../middleware/authMiddleare.js";
+import getUploader from "../../config/multerConfig.js";
+import { askQuestionRateLimiter } from "../../utils/globalFunction.js";
+
+const router = express.Router();
+const uploader = getUploader('hospital')
+
+router.get("/check-doctor-id/:unique_id", GetDoctor);
+router.post("/add-existing-doctor", auth, addExistingDoctorToHospital);
+router.get("/search", auth, searchUsers);
+router.get("/search-all", searchAllUsers);
+router.post("/save-fcm-token", auth, saveFcmToken);
+router.get("/notification", auth, getNotification);
+router.delete("/delete-all-notification", auth, deleteNotification);
+router.delete("/delete-notification/:id", auth, deleteOneNotification);
+
+
+router.post('/permission', authMiddleware, addPermission)
+router.put('/permission', authMiddleware, updatePermission)
+router.put('/assign-permission', authMiddleware, assignPermission)
+router.get('/permission/:id', authMiddleware, getAllPermission)
+router.delete('/permission', authMiddleware, deletePermission)
+
+router.get('/profile', authMiddleware, getProfile)
+
+router.get('/chat-allowed/:patientId/:doctorId', authMiddleware, allowedChat)
+router.post('/create-group', authMiddleware, uploader.single("image"), createGroup)
+
+router.post("/create-chat", authMiddleware, createChatSessionController)
+router.get("/chat-sessions", authMiddleware, getChatSessionsController)
+router.post("/follow-up-question", authMiddleware, askQuestionRateLimiter, uploader.fields([
+  { name: 'audio', maxCount: 1 },
+  { name: 'file', maxCount: 1 }
+]), followUpQuestionController)
+router.post("/ask-question", authMiddleware, askQuestionRateLimiter, askQuestionController)
+router.get("/ask/question", authMiddleware, getAskQuestionController)
+router.get("/general/question", authMiddleware, getGeneralQuestionController)
+router.get("/user-data/:nh12", authMiddleware, getUserDataController)
+router.post("/payment-info", authMiddleware, uploader.single('qr'), addOrUpatePaymentInfo)
+router.get("/doctor-appointment-payment/:id", doctorAppointmentInvoice)
+router.get("/opd-invoice/:id", opdInvoicePdf)
+router.get("/doctor-empanelment/:doctorId/:hospitalId", doctorEmpanelmentPdf)
+router.get("/pharmacy-invoice/:id", pharmacyInvoicePdf)
+router.get("/pharmacy-return/:id", pharmacyReturnPdf)
+router.get("/prescription/:id", prescriptionPdf)
+router.get("/consent-letter/:id", consentLetterPdf)
+router.get("/bed-invoice/:id", bedInvoicePdf)
+router.get("/lab-sample/:id", labSamplePdf)
+router.get("/lab-report/:id", labReportPdf)
+router.get("/lab-invoice/:id", labInvoicePdf)
+router.get("/lab-order/:id", labOrderPdf)
+router.get("/discharge-summary/:id", dischargeSummaryPdf)
+router.get('/test-category', getTestCatAndSub)
+router.get('/my-test-category', authMiddleware, getMyTestCat)
+router.get('/sub-test-category/:id', getSubTestCatById)
+router.get('/sub-test-category-data/:id', getSubTestCatDataById)
+export default router;
