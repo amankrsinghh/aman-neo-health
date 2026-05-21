@@ -20,8 +20,8 @@ function DoctorAppointmentsList() {
     const [loading, setLoading] = useState(false)
     const [currentPage, setCurrentPage] = useState(1)
     const [totalPages, setTotalPages] = useState(1)
-    const [startDate, setStartDate] = useState(null)
-    const [endDate, setEndDate] = useState(null)
+    const [startDate, setStartDate] = useState(location.state?.startDate || null)
+    const [endDate, setEndDate] = useState(location.state?.endDate || null)
     const [search, setSearch] = useState('')
     const [status, setStatus] = useState(location.state?.statuses || [])
     const [activeApt, setActiveApt] = useState(null)
@@ -48,7 +48,7 @@ function DoctorAppointmentsList() {
         if (userId) {
             getAppointmentData()
         }
-    }, [userId, currentPage, status])
+    }, [userId, currentPage, status, startDate, endDate])
     const handleStatusChange = (value) => {
         setStatus((prev) =>
             prev.includes(value)

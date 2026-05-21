@@ -92,7 +92,10 @@ function DoctorRequestsList() {
                             </div>
 
                             <div className="col-lg-3 col-md-4 col-sm-12 mb-3">
-                                <div className="patient-nw-card patient-appointment-crd cursor-pointer" onClick={() => navigate(`/appointment-list`)}>
+                                <div className="patient-nw-card patient-appointment-crd cursor-pointer" onClick={() => {
+                                    const today = new Date().toISOString().split('T')[0];
+                                    navigate(`/appointment-list`, { state: { startDate: today, endDate: today } });
+                                }}>
                                     <div className="patient-data-content">
                                         <span className="patient-dashboard-card"> <FontAwesomeIcon icon={faHouseMedical} /> </span>
                                         <h5>{cardData?.todayApt}</h5>
