@@ -7,7 +7,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../../utils/axios";
 import Swal from "sweetalert2";
-import { IMAGE_BASE_URL } from "../../utils/config";
+import base_url from "../../Services/baseUrl";
 import { statusClass } from "../../Services/globalFunction";
 
 function DoctorRequest() {
@@ -125,7 +125,7 @@ function DoctorRequest() {
                       : list.map((item, i) => (
                         <tr key={item._id}>
                           <td>{String((page - 1) * limit + i + 1).padStart(2, "0")}.</td>
-                          <td><img src={item.profileImage ? `${IMAGE_BASE_URL}/${item.profileImage}` : "/doctor-avatr.png"} alt=""
+                          <td><img src={(item.profileImage || item.doctor?.profileImage) ? ( (item.profileImage || item.doctor?.profileImage).startsWith('http') ? (item.profileImage || item.doctor?.profileImage) : `${base_url}/${(item.profileImage || item.doctor?.profileImage).startsWith('uploads') ? (item.profileImage || item.doctor?.profileImage) : 'uploads/doctor/' + (item.profileImage || item.doctor?.profileImage)}` ) : "/doctor-avatr.png"} alt=""
                             style={{ width: 44, height: 44, borderRadius: "50%", objectFit: "cover" }}
                             onError={e => { e.target.src = "/doctor-avatr.png"; }} /></td>
                           <td><h6 className="mb-0">{item.name}</h6></td>
@@ -135,9 +135,9 @@ function DoctorRequest() {
                               <li className="ad-info-item"><span className="ad-info-title">Email:</span> {item.email || "—"}</li>
                             </ul>
                           </td>
-                          <td>{calcAge(item.dob)}</td>
+                          <td>{calcAge(item.dob || item.doctor?.dob)}</td>
                           <td>{fmt(item.createdAt)}</td>
-                          <td><span className={`approved ${statusClass(item.status)} text-capitalize`}>{item.status}</span></td>
+                          <td><span className={`approved ${statusClass(item.status || item.doctor?.status || "pending")} text-capitalize`}>{item.status || item.doctor?.status || "pending"}</span></td>
                           <td>
                             <div className="dropdown position-static">
                               <a href="javascript:void(0)" className="grid-dots-btn" data-bs-toggle="dropdown"><TbGridDots /></a>
@@ -145,22 +145,22 @@ function DoctorRequest() {
                                 <li className="prescription-item">
                                   <NavLink to={`/doctor-info-details/${item.user?._id || item._id}`} className="prescription-nav">View Details</NavLink>
                                 </li>
-                                {item?.status !== "approved" && <li className="prescription-item">
+                                {(item.status !== "approved" && item.doctor?.status !== "approved") && <li className="prescription-item">
                                   <a className="prescription-nav status-paid-title" href="#"
-                                    onClick={e => { e.preventDefault(); handleApprove(item._id); }}>
+                                    onClick={e => { e.preventDefault(); handleApprove(item._id || item.doctor?._id); }}>
                                     <FontAwesomeIcon icon={faCheck} /> Approve
                                   </a>
                                 </li>}
-                                {item?.status !== "block" && <li className="prescription-item">
+                                {(item.status !== "block" && item.doctor?.status !== "block") && <li className="prescription-item">
                                   <a className="prescription-nav reject-title" href="#"
-                                    onClick={e => { e.preventDefault(); handleBlock(item._id); }}>
+                                    onClick={e => { e.preventDefault(); handleBlock(item._id || item.doctor?._id); }}>
                                     Block
                                   </a>
                                 </li>}
-                                {item?.status !== "rejected" && <li className="prescription-item">
+                                {(item.status !== "rejected" && item.doctor?.status !== "rejected") && <li className="prescription-item">
                                   <a className="prescription-nav reject-title" href="#"
-                                    data-bs-toggle="modal" data-bs-target="#hospitalRejectModal"
-                                    onClick={e => { e.preventDefault(); setRejectModal(item); setRejectReason(""); }}>
+                                    data-bs-toggle="modal" data-bs-target="#doctorRejectModal"
+                                    onClick={e => { e.preventDefault(); setRejectModal({...item, _id: item._id || item.doctor?._id}); setRejectReason(""); }}>
                                     Reject
                                   </a>
                                 </li>}
@@ -189,7 +189,7 @@ function DoctorRequest() {
             <div className="modal-body p-0 pt-3">
               {rejectModal && (
                 <div className="text-center mb-3">
-                  <img src={rejectModal.profileImage ? `${IMAGE_BASE_URL}/uploads/doctor/${rejectModal.profileImage}` : "/doctor-avatr.png"}
+                  <img src={rejectModal.profileImage ? `${base_url}/uploads/doctor/${rejectModal.profileImage}` : "/doctor-avatr.png"}
                     alt="" style={{ width: 85, height: 85, borderRadius: "50%", objectFit: "cover" }} onError={e => { e.target.src = "/doctor-avatr.png"; }} />
                   <h6 className="text-black fz-18 pt-2">{rejectModal.name}</h6>
                 </div>

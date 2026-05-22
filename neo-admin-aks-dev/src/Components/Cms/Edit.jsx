@@ -153,7 +153,7 @@ function CmsPageEdit() {
           </div>
 
           {/* STATUS */}
-          {/* <div className="mb-3">
+          <div className="mb-3">
             <label>Status</label>
             <select
               name="status"
@@ -164,7 +164,7 @@ function CmsPageEdit() {
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
             </select>
-          </div> */}
+          </div>
 
           {/* ⭐ JODIT RICH EDITOR */}
           <div className="mb-3">

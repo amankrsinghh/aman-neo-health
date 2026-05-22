@@ -131,6 +131,7 @@ export const getDoctors = async (req, res) => {
           dob: 1,
           profileImage: 1,
           status: 1,
+          createdAt: 1,
           _id: 1, // Doctor ID
           "user.nh12": 1,
           "user._id": 1, // User ID for link
@@ -415,3 +416,16 @@ export const getDoctorAppointmentData = async (req, res) => {
     return res.status(500).json({ message: error?.message, success: false })
   }
 }
+
+export const deleteDoctorAppointment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedAppt = await DoctorAppointment.findByIdAndDelete(id);
+    if (!deletedAppt) {
+      return res.status(404).json({ success: false, message: "Appointment not found" });
+    }
+    res.json({ success: true, message: "Appointment deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};

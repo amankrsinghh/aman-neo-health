@@ -41,7 +41,8 @@ function List() {
     try {
       await api.post(`/api/admin/cms/${page.slug}`, {
         title: page.title, content: page.content,
-        status: page.status === "active" ? "inactive" : "active"
+        panel: page.panel,
+        status: (page.status === "active" || !page.status) ? "inactive" : "active"
       });
       toast.success("Status updated");
       fetchCms();
@@ -102,16 +103,16 @@ function List() {
                       <td><code className="text-muted">{page.slug}</code></td>
                       <td>
                         <span
-                          className={`approved ${page.status === "active" ? "approved-active" : "approved-reject"}`}
-                          style={{ cursor:"pointer" }}
+                          className={`approved ${page.status === "inactive" ? "reject" : "approved-active"}`}
+                          style={{ cursor: "pointer", minWidth: "80px", textAlign: "center" }}
                           onClick={() => toggleStatus(page)}
                           title="Click to toggle"
                         >
-                          {page.status}
+                          {page.status || "active"}
                         </span>
                       </td>
-                      <td style={{fontSize:13}}>
-                        {new Date(page.updatedAt || page.createdAt).toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"})}
+                      <td style={{ fontSize: 13 }}>
+                        {new Date(page.updatedAt || page.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}
                       </td>
                       <td>
                         <div className="d-flex gap-2">

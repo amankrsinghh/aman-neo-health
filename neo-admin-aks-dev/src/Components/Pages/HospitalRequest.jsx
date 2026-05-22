@@ -23,7 +23,7 @@ function HospitalRequest() {
   const fetchList = async () => {
     try {
       setLoading(true);
-      const res = await api.get("/api/admin/hospitals", { params: { page, limit, search, status: statusFilter } });
+      const res = await api.get("/api/admin/hospitals/requests", { params: { page, limit, search, status: statusFilter } });
       setList(res.data.data || []);
       setTotalPages(res.data.totalPages || 1);
     } catch { setList([]); }
@@ -127,13 +127,13 @@ function HospitalRequest() {
                           <td>{item.contactNumber || item.mobileNo || "—"}</td>
                           <td>{item.gstNumber || "—"}</td>
                           <td>{fmt(item.createdAt)}</td>
-                          <td><span className={`approved ${statusClass(item.kycStatus)} text-capitalize`}>{item.kycStatus}</span></td>
+                          <td><span className={`approved ${statusClass(item.kycStatus || "pending")} text-capitalize`}>{item.kycStatus || "pending"}</span></td>
                           <td>
                             <div className="dropdown position-static">
                               <a href="javascript:void(0)" className="grid-dots-btn" data-bs-toggle="dropdown"><TbGridDots /></a>
                               <ul className="dropdown-menu dropdown-menu-end mt-2 admin-dropdown-card">
                                 <li className="prescription-item">
-                                  <NavLink to={`/hospital-info-details/${item.userId?._id || item._id}`} className="prescription-nav">View Details</NavLink>
+                                  <NavLink to={`/hospital-info-details/${item.userId?._id}`} className="prescription-nav">View Details</NavLink>
                                 </li>
 
                                 {item?.kycStatus !== "approved" && <li className="prescription-item">

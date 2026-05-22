@@ -9,7 +9,7 @@ import {
   toggleDoctorStatus,
   deleteDoctor,
   approveRejectDoctor, getDoctorAppointmentData,
-  getDoctorRequests
+  getDoctorRequests, deleteDoctorAppointment
 } from "../../controller/Admin/doctor.controller.js";
 import User from "../../models/Hospital/User.js";
 
@@ -62,6 +62,7 @@ router.get("/all-appointments", adminAuth, async (req, res) => {
 // ── Param routes AFTER specific routes ───────────────────────────────
 // Single appointment detail
 router.get("/appointment/:id", adminAuth, getDoctorAppointmentData);
+router.delete("/appointment/:id", adminAuth, deleteDoctorAppointment);
 
 router.get("/:id", adminAuth, getDoctorDetail);
 router.get("/:id/appointments", adminAuth, getDoctorAppointments);

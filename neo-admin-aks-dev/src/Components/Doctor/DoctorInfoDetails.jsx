@@ -12,7 +12,7 @@ import {
 import api from "../../utils/axios";
 import toast from "react-hot-toast";
 import { formatDate } from "../../utils/date";
-import { IMAGE_BASE_URL } from "../../utils/config";
+import base_url from "../../Services/baseUrl";
 import { QRCodeCanvas } from "qrcode.react";
 import html2canvas from "html2canvas";
 import { useRef } from "react";
@@ -184,7 +184,7 @@ function DoctorInfoDetails() {
                                                 <div className="doctor-information-card mb-4">
                                                     <div className="doctor-main-profile-card">
                                                         <div className="doctor-profile-pic">
-                                                            <img src={doctor?.profileImage ? `${IMAGE_BASE_URL}/uploads/doctor/${doctor.profileImage}` : "/doctor-info-pic.png"} alt="" onError={e => { e.target.src = "/doctor-info-pic.png"; }} />
+                                                            <img src={doctor?.profileImage ? (doctor.profileImage.startsWith('http') ? doctor.profileImage : `${base_url}/${doctor.profileImage.startsWith('uploads') ? doctor.profileImage : 'uploads/doctor/' + doctor.profileImage}`) : "/doctor-info-pic.png"} alt="" onError={e => { e.target.src = "/doctor-info-pic.png"; }} />
                                                         </div>
                                                         <div className="doctor-content-details">
                                                             <div className="doctor-info-heading">
@@ -376,7 +376,7 @@ function DoctorInfoDetails() {
                                                             <h6>{lic.certName}</h6>
                                                             <div className="doctor-license-pic">
                                                             <img
-                                                                src={`${IMAGE_BASE_URL}/${lic.certFile}`}
+                                                                src={`${base_url}/${lic.certFile}`}
                                                                 alt=""
                                                             />
                                                             </div>
