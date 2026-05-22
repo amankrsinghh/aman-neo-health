@@ -237,12 +237,17 @@ function CatDoctors() {
                                                 <div className="col-lg-3 col-md-4 col-sm-12 mb-3" key={key}>
                                                     <div className="favorite-docotr-card position-relative">
                                                         <div className="favorite-doctor-picture text-center">
-                                                            <img src={item?.doctorId?.profileImage ?
-                                                                `${base_url}/${item?.doctorId?.profileImage}` : "/date-time-img.png"} alt="" />
+                                                            <img src={item?.userId?.doctorId?.profileImage ?
+                                                                `${base_url}/${item?.userId?.doctorId?.profileImage}` : 
+                                                                item?.userId?.profileImage ? `${base_url}/${item?.userId?.profileImage}` :
+                                                                item?.profileImage ? `${base_url}/${item?.profileImage}` :
+                                                                "/date-time-img.png"} alt="" />
                                                             <div className="favorite-doctor-details">
                                                                 <h4 className="text-capitalize">Dr.{item?.userId?.name}</h4>
                                                                 <div className="my-2">
-                                                                    <span className="lab-rating"> <i className="fa-solid fa-star rating-icon"></i> {item?.rating?.avgRating?.toFixed(0)} </span>
+                                                                    <span className="lab-rating"> <i className="fa-solid fa-star rating-icon"></i> 
+                                                                        {item?.userId?.doctorId?.rating || item?.rating?.avgRating?.toFixed(0) || 0} 
+                                                                    </span>
                                                                 </div>
                                                                 <h6 className="nw-hospital-title">{item?.specialty?.name} <span className="slash-title" >|</span> {item?.hospitalName}</h6>
                                                                 <div className="d-flex align-items-center justify-content-between flex-column my-2">

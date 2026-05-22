@@ -1,9 +1,9 @@
 const base_url='https://api.neohealthcard.com:9100'
 
-// const base_url='http://localhost:9100'
+// const base_url = 'http://localhost:9100'
 
 
-const client_url='https://noepatient.divanex.in/'
+const client_url = 'https://noepatient.divanex.in/'
 
 
 
@@ -11,4 +11,4 @@ const client_url='https://noepatient.divanex.in/'
 
 //  http://localhost:9100
 export default base_url
-export {client_url}
+export { client_url }

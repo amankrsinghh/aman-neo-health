@@ -383,10 +383,10 @@ function CatLabs() {
                                                             `${base_url}/${item?.logo}` : "/lab-pic.png"} alt="" />
                                                     </div>
                                                     <div className="doctor-details  flex-grow-1">
-                                                        <h4 className="innr-title fz-700">{item?.userId.name}</h4>
+                                                        <h4 className="innr-title fz-700">{item?.userId?.name}</h4>
                                                         <p><FontAwesomeIcon icon={faLocationDot} /> {item?.about?.fullAddress}</p>
                                                         <div className="my-3">
-                                                            <span className="lab-rating"> <i class="fa-solid fa-star rating-icon"></i> {item?.rating?.avgRating.toFixed(0) || 0} </span>
+                                                            <span className="lab-rating"> <i className="fa-solid fa-star rating-icon"></i> {item?.rating || 0} </span>
                                                         </div>
 
                                                         <div className="  d-flex align-items-center justify-content-between">

@@ -26,6 +26,8 @@ import HospitalBasic from "../../models/Hospital/HospitalBasic.js";
 import Pharmacy from "../../models/Pharmacy/pharmacy.model.js";
 
 
+import TestCategory from "../../models/TestCategory.js";
+
 async function favoriteController(req, res) {
   const { userId, labId, hospitalId, doctorId, pharId } = req.body;
 
@@ -1073,32 +1075,67 @@ const getTopUserByCategory = async (req, res) => {
     }
 
     else if (catType == "lab") {
-      const labs = await Laboratory.find({ category: catId })
-        .select('userId logo rating')
-        .populate('userId', 'name email contactNumber')
-        .skip(skip)
-        .limit(limit);
+      const selectedCat = await TestCategory.findById(catId).lean();
+      if (!selectedCat) {
+        return res.status(200).json({ success: true, data: [], message: "Category not found" });
+      }
 
-      const labIds = labs.map(item => item.userId).filter(Boolean);;
+      // 1. Find all matching category IDs by a very flexible name search
+      // This handles cases like "Diabetes", "Diabetes ", "Diabities", etc. if they are similar
+      const catNameTrimmed = selectedCat.name.trim();
+      
+      // Get all categories that might be considered a match for this name
+      const allMatchingCats = await TestCategory.find({ 
+        name: { $regex: new RegExp(`^\\s*${catNameTrimmed}\\s*$`, 'i') } 
+      }).select('_id').lean();
+      
+      const allCatIds = allMatchingCats.map(c => c._id);
+
+      // 2. STRICTLY find labs that provide TESTS for any of these category IDs
+      // We ignore Laboratory.category entirely to ensure accuracy as requested
+      const testsWithCat = await Test.find({ category: { $in: allCatIds } })
+        .select('labId hospitalId')
+        .lean();
+
+      // Extract unique User IDs from the tests
+      const relevantUserIdsSet = new Set();
+      testsWithCat.forEach(t => {
+        if (t.labId) relevantUserIdsSet.add(t.labId.toString());
+        if (t.hospitalId) relevantUserIdsSet.add(t.hospitalId.toString());
+      });
+
+      const combinedUserIds = Array.from(relevantUserIdsSet).map(id => new mongoose.Types.ObjectId(id));
+
+      let labs = [];
+      let total = 0;
+
+      if (combinedUserIds.length > 0) {
+        labs = await Laboratory.find({ userId: { $in: combinedUserIds } })
+          .select('userId logo rating')
+          .populate('userId', 'name email contactNumber')
+          .skip(skip)
+          .limit(limit)
+          .lean();
+        
+        total = await Laboratory.countDocuments({ userId: { $in: combinedUserIds } });
+      }
+
+      const labIds = labs.map(item => item.userId?._id || item.userId).filter(Boolean);
 
       const labAddressData = await LabAddress.find({
         userId: { $in: labIds }
-      });
+      }).lean();
 
-
-
-
-      const mergedLab = labs.map(user => {
+      const mergedLab = labs.map(lab => {
+        const userIdStr = (lab.userId?._id || lab.userId)?.toString();
         const about = labAddressData.find(
-          a => a.userId.toString() === user?.userId?._id.toString()
+          a => a.userId?.toString() === userIdStr
         );
         return {
-          ...user.toObject(),
+          ...lab,
           about: about || null
         };
       });
-
-      const total = await Laboratory.countDocuments({ category: catId });
 
       return res.status(200).json({
         message: "lab",

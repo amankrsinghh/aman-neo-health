@@ -373,7 +373,14 @@ function Home() {
                   <p>{s?.description}</p>
                 </div>
                 <div className="text-center">
-                  <a href={s?.btnLink} target="_blank" className="nw-thm-btn">Search {s?.title}</a>
+                  <Link to={
+                    s?.title?.toLowerCase().includes('pharmacy') ? '/find-pharmacy' :
+                    s?.title?.toLowerCase().includes('doctor') ? '/new-doctor-details' :
+                    s?.title?.toLowerCase().includes('hospital') ? '/find-hospital' :
+                    s?.title?.toLowerCase().includes('lab') ? '/find-labs' :
+                    s?.title?.toLowerCase().includes('ambulance') ? '/find-hospital' :
+                    '/'
+                  } className="nw-thm-btn">Search {s?.title}</Link>
                 </div>
               </div>
             </div>)}
@@ -582,7 +589,7 @@ function Home() {
                   <button onClick={prevSlide} className="rating-prev me-2">
                     <FontAwesomeIcon icon={faChevronLeft} />
                   </button>
-                  <Link to={'/find-hospital'} className="view-all-btn">View All</Link>
+                  <Link to={'/find-labs'} className="view-all-btn">View All</Link>
                   <button onClick={nextSlide} className="rating-next">
                     <FontAwesomeIcon icon={faChevronRight} />
                   </button>
@@ -856,7 +863,7 @@ function Home() {
                   <button onClick={prevSlide} className="rating-prev me-2">
                     <FontAwesomeIcon icon={faChevronLeft} />
                   </button>
-                  <Link to={'/find-hospital'} className="view-all-btn">View All</Link>
+                  <Link to={'/find-pharmacy'} className="view-all-btn">View All</Link>
                   <button onClick={nextSlide} className="rating-next">
                     <FontAwesomeIcon icon={faChevronRight} />
                   </button>
