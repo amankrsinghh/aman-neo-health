@@ -239,22 +239,29 @@ function DoctorDetailsView({ isPatientView = false }) {
     }, [selectedLab])
 
     const startChatWithUser = async (user) => {
-        // create or get conversation
-        sessionStorage.setItem('chatUser', JSON.stringify(user))
+        const targetUser = user || appointmentData || patientData;
+        if (!targetUser) return;
+        sessionStorage.removeItem('voiceCall');
+        sessionStorage.removeItem('videoCall');
+        sessionStorage.setItem('chatUser', JSON.stringify(targetUser))
         navigate('/chat')
     };
     const startCallWithUser = async (user) => {
-        // create or get conversation
+        const targetUser = user || appointmentData || patientData;
+        if (!targetUser) return;
+        sessionStorage.removeItem('videoCall');
         sessionStorage.setItem('voiceCall', "true")
         sessionStorage.setItem('fromAppointment', "true")
-        sessionStorage.setItem('chatUser', JSON.stringify(user))
+        sessionStorage.setItem('chatUser', JSON.stringify(targetUser))
         navigate('/chat')
     };
     const startVideoCallWithUser = async (user) => {
-        // create or get conversation
+        const targetUser = user || appointmentData || patientData;
+        if (!targetUser) return;
+        sessionStorage.removeItem('voiceCall');
         sessionStorage.setItem('videoCall', "true")
         sessionStorage.setItem('fromAppointment', "true")
-        sessionStorage.setItem('chatUser', JSON.stringify(user))
+        sessionStorage.setItem('chatUser', JSON.stringify(targetUser))
         navigate('/chat')
     };
     const appointmentAction = async (status) => {

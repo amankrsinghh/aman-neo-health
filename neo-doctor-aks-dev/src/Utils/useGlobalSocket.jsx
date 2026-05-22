@@ -198,7 +198,11 @@ export function GlobalSocketProvider({ children }) {
     if (!selectedChat || !globalSocket) return;
     setCallType(type);
     setCalling(true)
-    initPeerConnection(selectedChat.participants[0]._id);
+    const myUserId = localStorage.getItem("userId");
+    const otherParticipant = selectedChat.participants.find(p => p._id !== myUserId && p !== myUserId);
+    const toUserId = otherParticipant?._id || otherParticipant || selectedChat.participants[0]._id;
+
+    initPeerConnection(toUserId);
 
     const stream = await navigator.mediaDevices.getUserMedia({
       audio: true,
@@ -215,7 +219,7 @@ export function GlobalSocketProvider({ children }) {
     await pcRef.current.setLocalDescription(offer);
 
     globalSocket.emit("call-user", {
-      toUserId: selectedChat.participants[0]._id,
+      toUserId: toUserId,
       callType: type,
       conversationId: selectedChat._id,
       isGroup: selectedChat?.type === "group",

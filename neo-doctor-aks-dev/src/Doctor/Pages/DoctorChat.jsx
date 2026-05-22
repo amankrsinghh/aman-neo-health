@@ -190,27 +190,41 @@ function DoctorChat({ socket, startCall }) {
         fetchConversations();
     }, []);
 
+    const initCalled = useRef(false);
     useEffect(() => {
         const initChatFromStorage = async () => {
+            if (initCalled.current || !socket) return;
+
             const storedUser = sessionStorage.getItem('chatUser');
             if (storedUser) {
+                initCalled.current = true;
+                
+                // Get call flags and clear storage IMMEDIATELY to prevent re-triggers
+                const isVoice = sessionStorage.getItem('voiceCall');
+                const isVideo = sessionStorage.getItem('videoCall');
+                sessionStorage.removeItem('chatUser');
+                sessionStorage.removeItem('voiceCall');
+                sessionStorage.removeItem('videoCall');
+                sessionStorage.removeItem('fromAppointment');
+
                 try {
                     const user = JSON.parse(storedUser);
-                    const patient = user?.patientId || user;
-                    if (patient?._id) {
-                        const res = await securePostData("api/chat/create", { userId: patient._id });
+                    const targetUserId = user?.patientId?._id || user?.patientId || user?._id;
+                    
+                    if (targetUserId) {
+                        const res = await securePostData("api/chat/create", { userId: targetUserId });
                         if (res.success) {
                             const conversation = res.data;
                             setSelectedChat(conversation);
                             
                             const msgRes = await getSecureApiData(`api/chat/messages/${conversation._id}`);
-                            setMessages(msgRes.data);
+                            if (msgRes.success) {
+                                setMessages(msgRes.data);
+                            }
                             
-                            if (socket) socket.emit("join-conversation", conversation._id);
+                            socket.emit("join-conversation", conversation._id);
 
                             // Handle Auto-Call
-                            const isVoice = sessionStorage.getItem('voiceCall');
-                            const isVideo = sessionStorage.getItem('videoCall');
                             if (isVoice === "true") {
                                 startCall("voice", conversation);
                             } else if (isVideo === "true") {
@@ -220,19 +234,12 @@ function DoctorChat({ socket, startCall }) {
                     }
                 } catch (e) {
                     console.error("Error initializing chat from storage", e);
-                } finally {
-                    sessionStorage.removeItem('chatUser');
-                    sessionStorage.removeItem('voiceCall');
-                    sessionStorage.removeItem('videoCall');
-                    sessionStorage.removeItem('fromAppointment');
                 }
             }
         };
 
-        if (chatList.length >= 0) {
-            initChatFromStorage();
-        }
-    }, [chatList.length > 0]);
+        initChatFromStorage();
+    }, [socket, myUserId]);
 
     // ─── Open chat ────────────────────────────────────────────────
     const openChat = async (chat) => {

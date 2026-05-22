@@ -64,12 +64,15 @@ function DoctorRequestsList() {
 
     const startChatWithUser = async (user) => {
         // create or get conversation
+        sessionStorage.removeItem('voiceCall');
+        sessionStorage.removeItem('videoCall');
         sessionStorage.setItem('chatUser', JSON.stringify(user))
         navigate('/chat')
     };
     const startCallWithUser = async (user) => {
         // create or get conversation
-        sessionStorage.setItem('voiceCall', "true")
+        sessionStorage.removeItem('voiceCall');
+        sessionStorage.setItem('videoCall', "true")
         sessionStorage.setItem('fromAppointment', "true")
         sessionStorage.setItem('chatUser', JSON.stringify(user))
         navigate('/chat')
@@ -320,14 +323,14 @@ function DoctorRequestsList() {
                                                                                 </NavLink>
                                                                             </li>
                                                                             <li className="prescription-item">
-                                                                                <NavLink onClick={() => startChatWithUser(item)} className="prescription-nav" >
+                                                                                <button onClick={() => startChatWithUser(item)} className="prescription-nav w-100 text-start" >
                                                                                     Chat Now
-                                                                                </NavLink>
+                                                                                </button>
                                                                             </li>
                                                                             <li className="prescription-item">
-                                                                                <NavLink to="/prescription-bar" className="prescription-nav" href="#" >
+                                                                                <button onClick={() => startCallWithUser(item)} className="prescription-nav w-100 text-start" >
                                                                                     Video Call
-                                                                                </NavLink>
+                                                                                </button>
                                                                             </li>
                                                                             <li className="prescription-item">
                                                                                 <button onClick={() => appointmentAction(item?._id, 'completed')} className="prescription-nav text-start d-inline-block w-100"  >
