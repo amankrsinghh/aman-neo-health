@@ -26,6 +26,7 @@ function NewDoctorListing() {
     rating: [],
     language: []
   });
+  const [sortBy, setSortBy] = useState("");
 sessionStorage.removeItem('aptData')
   const [sideFilter, setSideFilter] = useState({ availability: "", rating: [""], pricing: [""], specialty: [""], language: [""] })
   const fetchDoctors = async () => {
@@ -99,6 +100,7 @@ sessionStorage.removeItem('aptData')
       rating: [],
       language: []
     });
+    setSortBy("");
   };
   const buildQueryParams = () => {
     const params = new URLSearchParams();
@@ -118,12 +120,17 @@ sessionStorage.removeItem('aptData')
     if (filters.pricing.length)
       params.append("fees", filters.pricing.join(","));
 
+    if (filters.availability.length)
+      params.append("availability", filters.availability.join(","));
+
+    if (sortBy)
+      params.append("sortBy", sortBy);
 
     return params.toString();
   };
   useEffect(() => {
     fetchDoctors()
-  }, [filters]);
+  }, [filters, sortBy]);
 
 
   useEffect(() => {
@@ -396,10 +403,13 @@ sessionStorage.removeItem('aptData')
                      <div className="filters">
                                         <div className="field custom-frm-bx mb-0 custom-select admin-table-search-frm ">
                                             <label className="label">Sort By</label>
-                                            <select className="">
-                                                <option>Price (Low to High) </option>
-                                                <option>Test 1</option>
-                                                <option>Test 2</option>
+                                            <select 
+                                                value={sortBy} 
+                                                onChange={(e) => setSortBy(e.target.value)}
+                                            >
+                                                <option value="">Default</option>
+                                                <option value="lowToHigh">Price (Low to High)</option>
+                                                <option value="highToLow">Price (High to Low)</option>
                                             </select>
                                         </div>
                                     </div>

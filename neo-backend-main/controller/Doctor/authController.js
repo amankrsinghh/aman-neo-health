@@ -9,6 +9,7 @@ import Login from '../../models/login.js';
 import DoctorKyc from '../../models/Doctor/kyc.model.js';
 import fs from 'fs'
 import DoctorAbout from '../../models/Doctor/addressAbout.model.js';
+import Speciality from '../../models/Speciality.js';
 import DoctorEduWork from '../../models/Doctor/eduWork.js';
 import MedicalLicense from '../../models/Doctor/medicalLicense.model.js';
 import EditRequest from '../../models/EditRequest.js';
@@ -1162,25 +1163,37 @@ const getCustomProfile = async (req, res) => {
 const getDoctors = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const page = parseInt(req.query.page) || 1;
-    const { name, specialty, language, fees, rating, sortBy } = req.query;
+    const { name, specialty, language, fees, rating, sortBy, availability } = req.query;
 
     try {
         const specialties = specialty ? specialty.split(',') : [];
         const languages = language ? language.split(',') : [];
         const minRating = rating ? Number(rating) : 0;
-        const feesRange = fees ? fees.split('_') : [];
-        const minFees = feesRange[0] !== undefined ? Number(feesRange[0]) : null;
-        const maxFees = feesRange[1] !== undefined ? Number(feesRange[1]) : null;
 
         /* ===== STEP 1: DoctorAbout filters + sort ===== */
         const aboutFilter = {};
-        if (specialties.length) aboutFilter.specialty = { $in: specialties };
+        if (specialties.length) {
+            const specialityDocs = await Speciality.find({ name: { $in: specialties } }).select('_id');
+            const specialityIds = specialityDocs.map(doc => doc._id);
+            aboutFilter.specialty = { $in: specialityIds };
+        }
         if (languages.length) aboutFilter.language = { $in: languages };
-        if (minFees !== null || maxFees !== null) {
-            aboutFilter.fees = {
-                ...(minFees !== null && { $gte: minFees }),
-                ...(maxFees !== null && { $lte: maxFees }),
-            };
+        
+        if (fees) {
+            const ranges = fees.split(',');
+            const feeQueries = [];
+            ranges.forEach(r => {
+                const [min, max] = r.split('_');
+                const q = {};
+                if (min !== undefined && min !== '') q.$gte = Number(min);
+                if (max !== undefined && max !== '') q.$lte = Number(max);
+                if (Object.keys(q).length) {
+                    feeQueries.push({ fees: q });
+                }
+            });
+            if (feeQueries.length) {
+                aboutFilter.$or = feeQueries;
+            }
         }
 
         const sortOption = sortBy === 'lowToHigh' ? { fees: 1 }
@@ -1203,8 +1216,17 @@ const getDoctors = async (req, res) => {
         };
         if (name) userFilter.name = { $regex: name, $options: 'i' };
 
+        if (availability) {
+            const availStates = availability.split(',');
+            if (availStates.includes('Available') && !availStates.includes('Not Available')) {
+                userFilter.isAvailable = true;
+            } else if (availStates.includes('Not Available') && !availStates.includes('Available')) {
+                userFilter.isAvailable = { $ne: true };
+            }
+        }
+
         const users = await User.find(userFilter)
-            .select('name email contactNumber doctorId')
+            .select('name email contactNumber doctorId isAvailable')
             .populate('doctorId', 'profileImage rating')
             .lean();  // ← koi sort nahi, order baad mein lagayenge
 
