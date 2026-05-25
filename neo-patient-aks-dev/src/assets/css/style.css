@@ -7182,3 +7182,21 @@ object-fit: fill;
   display: list-item !important;
   list-style-position: outside !important;
 }
+
+/* Custom Active Chat Card Highlight */
+.active-chat-card {
+  background: #00B4B52b !important;
+  border: 1px solid #00B4B5 !important;
+  box-shadow: 0 4px 12px rgba(0, 180, 181, 0.15) !important;
+  position: relative;
+}
+.active-chat-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10%;
+  height: 80%;
+  width: 4px;
+  background-color: #00B4B5;
+  border-radius: 0 4px 4px 0;
+}

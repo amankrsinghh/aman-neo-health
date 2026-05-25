@@ -147,6 +147,24 @@ function AppointmentDetailsCompleted() {
     const startChatWithUser = async (user) => {
         // create or get conversation
         sessionStorage.setItem('chatUser', JSON.stringify(user))
+        sessionStorage.removeItem('voiceCall')
+        sessionStorage.removeItem('videoCall')
+        navigate('/chat')
+    };
+    const startCallWithUser = async (user) => {
+        // create or get conversation
+        sessionStorage.setItem('voiceCall', "true")
+        sessionStorage.setItem('fromAppointment', "true")
+        sessionStorage.setItem('chatUser', JSON.stringify(user))
+        sessionStorage.removeItem('videoCall')
+        navigate('/chat')
+    };
+    const startVideoCallWithUser = async (user) => {
+        // create or get conversation
+        sessionStorage.setItem('videoCall', "true")
+        sessionStorage.setItem('fromAppointment', "true")
+        sessionStorage.setItem('chatUser', JSON.stringify(user))
+        sessionStorage.removeItem('voiceCall')
         navigate('/chat')
     };
     async function rateDoctor() {
@@ -266,9 +284,9 @@ function AppointmentDetailsCompleted() {
                                             </div>
                                             <div>
                                                 <ul className="doctor-social-list">
-                                                    <li className="doctor-social-item"><a href="javascript:void(0)" className="doctor-social-btn" > <FontAwesomeIcon icon={faMessage} /> </a></li>
-                                                    <li className="doctor-social-item"><a href="javascript:void(0)" className="doctor-social-btn" > <FontAwesomeIcon icon={faPhone} /> </a></li>
-                                                    <li className="doctor-social-item"><a href="javascript:void(0)" className="doctor-social-btn" > <FontAwesomeIcon icon={faVideo} /> </a></li>
+                                                    <li className="doctor-social-item"><button onClick={() => startChatWithUser(appointmentData?.doctorId)} className="doctor-social-btn" > <FontAwesomeIcon icon={faMessage} /> </button></li>
+                                                    <li className="doctor-social-item"><button onClick={() => startCallWithUser(appointmentData?.doctorId)} className="doctor-social-btn" > <FontAwesomeIcon icon={faPhone} /> </button></li>
+                                                    <li className="doctor-social-item"><button onClick={() => startVideoCallWithUser(appointmentData?.doctorId)} className="doctor-social-btn" > <FontAwesomeIcon icon={faVideo} /> </button></li>
                                                 </ul>
                                             </div>
                                         </div>

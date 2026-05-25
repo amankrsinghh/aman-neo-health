@@ -142,6 +142,7 @@ const groupCallParticipants = new Map();
 io.on("connection", (socket) => {
     console.log("🔌 Socket connected:", socket.id);
     onlineUsers.set(socket.userId, socket.id);
+    User.findByIdAndUpdate(socket.userId, { isOnline: true }).catch(err => console.error("Error setting online status:", err));
 
     io.emit("online-users", Array.from(onlineUsers.keys()));
 
@@ -354,6 +355,12 @@ io.on("connection", (socket) => {
                 offer,
                 callType, name: callerName, photo: callerPhoto
             });
+        } else {
+            activeCalls.delete(callerId);
+            activeCalls.delete(toUserId);
+            io.to(socket.id).emit("call-rejected", {
+                message: "User is offline"
+            });
         }
     });
     socket.on("set-availability", async (status) => {
@@ -511,19 +518,10 @@ io.on("connection", (socket) => {
         conversationId,
         isGroup = false
     }) => {
-
         const userId = socket.userId;
 
-        activeCalls.delete(userId); // ✅ sirf apna remove karo
-
-        if (socket.callLog) {
-            socket.callLog.endTime = new Date();
-            socket.callLog.status = "rejected";
-            await socket.callLog.save();
-            socket.callLog = null;
-        }
-
         if (isGroup) {
+            activeCalls.delete(userId);
             // ❗ IMPORTANT: only notify others, NOT end call
             socket.to(conversationId).emit("user-rejected-call", {
                 userId
@@ -533,6 +531,16 @@ io.on("connection", (socket) => {
         }
 
         // individual call
+        activeCalls.delete(userId);
+        activeCalls.delete(toUserId);
+
+        if (socket.callLog) {
+            socket.callLog.endTime = new Date();
+            socket.callLog.status = "rejected";
+            await socket.callLog.save();
+            socket.callLog = null;
+        }
+
         const callerSocketId = onlineUsers.get(toUserId);
         if (callerSocketId) {
             io.to(callerSocketId).emit("call-rejected", {
@@ -548,13 +556,15 @@ io.on("connection", (socket) => {
         }
         if (socket.userId) {
             console.log("disconnecting user", socket.userId)
-            onlineUsers.delete(socket.userId);
+            if (onlineUsers.get(socket.userId) === socket.id) {
+                onlineUsers.delete(socket.userId);
 
-            await User.findByIdAndUpdate(socket.userId, {
-                isOnline: false,
-                isAvailable: false,
-                lastSeen: new Date()
-            });
+                await User.findByIdAndUpdate(socket.userId, {
+                    isOnline: false,
+                    isAvailable: false,
+                    lastSeen: new Date()
+                });
+            }
 
             io.emit("online-users", Array.from(onlineUsers.keys()));
         }

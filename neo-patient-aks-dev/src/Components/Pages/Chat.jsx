@@ -48,7 +48,18 @@ function Chat({ socket, startCall }) {
     const [typingUser, setTypingUser] = useState(false);
     const fileInputRef = useRef(null);
     const bottomRef = useRef(null);
+    const chatContainerRef = useRef(null);
+    const mainBoxRef = useRef(null);
+
+    const getChatImage = (chatObj) => {
+        if (!chatObj || !chatObj.image || chatObj.image.endsWith('/undefined') || chatObj.image.endsWith('/null')) {
+            return "/profile.png";
+        }
+        return chatObj.image.startsWith("http") ? chatObj.image : `${base_url}/${chatObj.image}`;
+    };
+
     const [searchText, setSearchText] = useState("");
+
     const [searchUsers, setSearchUsers] = useState([]);
 
     const SERVER_BASE_URL = base_url;
@@ -56,6 +67,11 @@ function Chat({ socket, startCall }) {
     // ─── Keep selectedChat in ref ────────────────────────────────
     useEffect(() => {
         selectedChatRef.current = selectedChat;
+    }, [selectedChat]);
+
+    // ─── Scroll window to top on chat select ───────────────────────
+    useEffect(() => {
+        window.scrollTo(0, 0);
     }, [selectedChat]);
 
     // ─── File select ─────────────────────────────────────────────
@@ -166,7 +182,21 @@ function Chat({ socket, startCall }) {
 
     // ─── Scroll to bottom ─────────────────────────────────────────
     useEffect(() => {
-        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+        const timer = setTimeout(() => {
+            if (chatContainerRef.current) {
+                chatContainerRef.current.scrollTo({
+                    top: chatContainerRef.current.scrollHeight,
+                    behavior: "smooth"
+                });
+            }
+            if (mainBoxRef.current) {
+                mainBoxRef.current.scrollTo({
+                    top: mainBoxRef.current.scrollHeight,
+                    behavior: "smooth"
+                });
+            }
+        }, 100);
+        return () => clearTimeout(timer);
     }, [messages]);
 
     // ─── Load conversations ───────────────────────────────────────
@@ -188,6 +218,67 @@ function Chat({ socket, startCall }) {
     useEffect(() => {
         fetchConversations();
     }, []);
+
+    useEffect(() => {
+        if (!chatList || chatList.length === 0) return;
+
+        const storedUserStr = sessionStorage.getItem('chatUser');
+        if (storedUserStr) {
+            try {
+                const storedUser = JSON.parse(storedUserStr);
+                if (storedUser && storedUser._id) {
+                    // Check if conversation exists
+                    const existingChat = chatList.find(c => 
+                        c.type !== "group" && 
+                        c.participants?.some(p => p._id === storedUser._id)
+                    );
+                    
+                    const handleCallTrigger = (chatObj) => {
+                        const voiceCall = sessionStorage.getItem('voiceCall') === "true";
+                        const videoCall = sessionStorage.getItem('videoCall') === "true";
+                        if (voiceCall && startCall) {
+                            startCall("voice", chatObj);
+                        } else if (videoCall && startCall) {
+                            startCall("video", chatObj);
+                        }
+                        sessionStorage.removeItem('chatUser');
+                        sessionStorage.removeItem('fromAppointment');
+                        sessionStorage.removeItem('voiceCall');
+                        sessionStorage.removeItem('videoCall');
+                    };
+
+                    if (existingChat) {
+                        openChat(existingChat);
+                        handleCallTrigger(existingChat);
+                    } else {
+                        // Create conversation
+                        (async () => {
+                            try {
+                                const res = await securePostData("api/chat/create", { userId: storedUser._id });
+                                if (res.success && res.data) {
+                                    const conversation = res.data;
+                                    setSelectedChat(conversation);
+                                    const msgRes = await getSecureApiData(`api/chat/messages/${conversation._id}`);
+                                    setMessages(msgRes.data);
+                                    if (socket) socket.emit("join-conversation", conversation._id);
+                                    
+                                    setChatList((prev) => {
+                                        const exists = prev.find((c) => c._id === conversation._id);
+                                        return exists ? prev : [conversation, ...prev];
+                                    });
+                                    handleCallTrigger(conversation);
+                                }
+                            } catch (err) {
+                                console.error("Error creating conversation on mount", err);
+                            }
+                        })();
+                    }
+                }
+            } catch (e) {
+                console.error("Error parsing chatUser on mount", e);
+            }
+        }
+    }, [chatList, socket, startCall]);
 
     // ─── Open chat ────────────────────────────────────────────────
     const openChat = async (chat) => {
@@ -409,35 +500,37 @@ function Chat({ socket, startCall }) {
                                                     ))}
                                                 </div>
                                             )}
-                                            {chatList?.map((chat) => (
-                                                <a href="#" key={chat._id}>
-                                                    <div
-                                                        className="chat-usr-card nw-chat-usr-card"
-                                                        onClick={() => openChat(chat)}
-                                                    >
-                                                        <div className="d-flex align-items-center justify-content-between">
-                                                            <div className="chat-usr-avatr-crd">
-                                                                <div className="chat-usr-avatr-bx">
-                                                                    <img src={chat?.type == "group" ? `${base_url}/${chat?.image}` :
-                                                                        "/profile.png"} alt="" />
+                                            {chatList?.map((chat) => {
+                                                const isSelected = selectedChat?._id === chat._id;
+                                                return (
+                                                    <a href="#" key={chat._id} style={{ textDecoration: 'none' }} onClick={(e) => e.preventDefault()}>
+                                                        <div
+                                                            className={`chat-usr-card nw-chat-usr-card ${isSelected ? 'active-chat-card' : ''}`}
+                                                            onClick={() => openChat(chat)}
+                                                        >
+                                                            <div className="d-flex align-items-center justify-content-between">
+                                                                <div className="chat-usr-avatr-crd">
+                                                                    <div className="chat-usr-avatr-bx">
+                                                                        <img src={getChatImage(chat)} alt="" />
+                                                                    </div>
+                                                                    <div className="chat-usr-info">
+                                                                        <h5>{chat?.type == "group" ? chat?.name : chat.participants[0]?.name?.slice(0, 15)}</h5>
+                                                                        <p>{chat.lastMessage?.slice(0, 15)}</p>
+                                                                    </div>
                                                                 </div>
-                                                                <div className="chat-usr-info">
-                                                                    <h5>{chat?.type == "group" ? chat?.name : chat.participants[0]?.name?.slice(0, 15)}</h5>
-                                                                    <p>{chat.lastMessage?.slice(0, 15)}</p>
-                                                                </div>
-                                                            </div>
 
-                                                            {chat.unreadCount > 0 && (
-                                                                <div className="chat-count-bx me-lg-3">
-                                                                    <span className="chat-count-title">
-                                                                        {chat.unreadCount}
-                                                                    </span>
-                                                                </div>
-                                                            )}
+                                                                {chat.unreadCount > 0 && (
+                                                                    <div className="chat-count-bx me-lg-3">
+                                                                        <span className="chat-count-title" style={isSelected ? { backgroundColor: '#ffffff', color: '#00b4b5' } : {}}>
+                                                                            {chat.unreadCount}
+                                                                        </span>
+                                                                    </div>
+                                                                )}
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </a>
-                                            ))}
+                                                    </a>
+                                                );
+                                            })}
 
                                             <div className="add-chat">
                                                 <button className="thm-btn p-2" data-bs-toggle="modal" data-bs-target="#new-Chat"><FontAwesomeIcon icon={faPlusCircle} /></button>
@@ -455,8 +548,7 @@ function Chat({ socket, startCall }) {
                                                 <div className="d-flex align-items-center justify-content-between">
                                                     <div className="chat-usr-avatr-crd">
                                                         <div className="chat-usr-avatr-bx nw-chat-add-live">
-                                                            <img src={selectedChat?.type == "group" ? `${base_url}/${selectedChat?.image}` :
-                                                                "/profile.png"} alt="" />
+                                                            <img src={getChatImage(selectedChat)} alt="" />
                                                         </div>
                                                         <div className="chat-usr-info">
                                                             <h5 className="mb-0">{selectedChat?.type == "group" ? selectedChat?.name : selectedChat?.participants[0]?.name || "Select Chat"}</h5>
@@ -475,8 +567,8 @@ function Chat({ socket, startCall }) {
                                             </div>
                                         </div>
 
-                                        <div className="all-chating-content-bx">
-                                            <div className="chat-container">
+                                        <div ref={mainBoxRef} className="all-chating-content-bx">
+                                            <div ref={chatContainerRef} className="chat-container">
                                                 {messages?.map((msg, i) => {
                                                     const isMe = msg.sender._id === myUserId;
                                                     return (

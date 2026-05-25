@@ -106,6 +106,15 @@ function LabTestDetailsUpcoming() {
     const startChatWithUser = async (user) => {
         // create or get conversation
         sessionStorage.setItem('chatUser', JSON.stringify(user))
+        sessionStorage.removeItem('voiceCall')
+        sessionStorage.removeItem('videoCall')
+        navigate('/chat')
+    };
+    const startCallWithUser = async (user) => {
+        // create or get conversation
+        sessionStorage.setItem('voiceCall', "true")
+        sessionStorage.setItem('chatUser', JSON.stringify(user))
+        sessionStorage.removeItem('videoCall')
         navigate('/chat')
     };
 
@@ -165,11 +174,11 @@ function LabTestDetailsUpcoming() {
                                             </div>
 
                                             <div>
-                                                <ul className="doctor-social-list">
-                                                    <li className="doctor-social-item"><button onClick={() => startChatWithUser(appointmentData?.labId)} className="doctor-social-btn" > <FontAwesomeIcon icon={faMessage} /> </button></li>
-                                                    <li className="doctor-social-item"><button onClick={() => startChatWithUser(appointmentData?.labId)} className="doctor-social-btn" > <FontAwesomeIcon icon={faPhone} /> </button></li>
+                                                 <ul className="doctor-social-list">
+                                                     <li className="doctor-social-item"><button onClick={() => startChatWithUser(appointmentData?.labId)} className="doctor-social-btn" > <FontAwesomeIcon icon={faMessage} /> </button></li>
+                                                     <li className="doctor-social-item"><button onClick={() => startCallWithUser(appointmentData?.labId)} className="doctor-social-btn" > <FontAwesomeIcon icon={faPhone} /> </button></li>
 
-                                                </ul>
+                                                 </ul>
                                             </div>
 
                                         </div>

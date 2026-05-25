@@ -49,6 +49,14 @@ function DoctorChat({ socket, startCall }) {
     const [typingUser, setTypingUser] = useState(false);
     const fileInputRef = useRef(null);
     const bottomRef = useRef(null);
+
+    const getChatImage = (chatObj) => {
+        if (!chatObj || !chatObj.image || chatObj.image.endsWith('/undefined') || chatObj.image.endsWith('/null')) {
+            return "/profile.png";
+        }
+        return chatObj.image.startsWith("http") ? chatObj.image : `${base_url}/${chatObj.image}`;
+    };
+
     const [searchText, setSearchText] = useState("");
     const [searchUsers, setSearchUsers] = useState([]);
 
@@ -461,8 +469,7 @@ function DoctorChat({ socket, startCall }) {
                                                         <div className="d-flex align-items-center justify-content-between">
                                                             <div className="chat-usr-avatr-crd">
                                                                 <div className="chat-usr-avatr-bx">
-                                                                    <img src={chat?.type == "group" ? `${base_url}/${chat?.image}` :
-                                                                        "/profile.png"} alt="" />
+                                                                    <img src={getChatImage(chat)} alt="" />
                                                                 </div>
                                                                 <div className="chat-usr-info">
                                                                     <h5>{chat?.type == "group" ? chat.name : chat.participants.find(p => p._id !== myUserId)?.name || chat.participants[0]?.name}</h5>
@@ -497,8 +504,7 @@ function DoctorChat({ socket, startCall }) {
                                                 <div className="d-flex align-items-center justify-content-between">
                                                     <div className="chat-usr-avatr-crd">
                                                         <div className="chat-usr-avatr-bx nw-chat-add-live">
-                                                            <img src={selectedChat?.type == "group" ? `${base_url}/${selectedChat?.image}` :
-                                                                "/profile.png"} alt="" />
+                                                            <img src={getChatImage(selectedChat)} alt="" />
                                                         </div>
                                                         <div className="chat-usr-info">
                                                             <h5 className="mb-0">

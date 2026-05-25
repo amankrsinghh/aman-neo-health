@@ -252,7 +252,7 @@ function LabDetails() {
                                                                 name: s.subCat.subCategory,
                                                                 price: s.price,
                                                                 category: item.category?.name,
-                                                                catId:item?.category?._id
+                                                                catId: item?.category?._id
                                                             }))
                                                         setSelectedTest(prev => [...prev, ...newItems])
                                                     } else {
@@ -276,7 +276,7 @@ function LabDetails() {
                                                                         checked={isCatSelected}
                                                                         onChange={(e) => handleCatCheckbox(e.target.checked)}
                                                                     />
-                                                                   <label htmlFor={`package-${key}`}>₹ {item?.totalAmount}</label>
+                                                                    <label htmlFor={`package-${key}`}>₹ {item?.totalAmount}</label>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -298,7 +298,7 @@ function LabDetails() {
                                                                                         name: s.subCat.subCategory,
                                                                                         price: s.price,
                                                                                         category: item.category?.name,
-                                                                                        catId:item?.category?._id
+                                                                                        catId: item?.category?._id
                                                                                     }]
                                                                                 } else {
                                                                                     return prev.filter(x => x.subCatId !== s.subCat._id)
