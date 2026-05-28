@@ -118,14 +118,14 @@ function PatientHistory() {
                                                             <td>{(currentPage - 1) * 10 + key + 1}.</td>
                                                             <td>
                                                                 <div className="admin-table-bx">
-                                                                    <div className="admin-table-sub-details d-flex align-items-center gap-2">
+                                                                    <Link to={`/user/${item?.userId?._id}`} className="admin-table-sub-details d-flex align-items-center gap-2 text-decoration-none">
                                                                         <img src={item?.profileImage ? `${base_url}/${item?.profileImage}`
                                                                             : "/profile.png"} alt="" />
                                                                         <div>
-                                                                            <h6 className="">{item?.name}</h6>
-                                                                            <p>{item?.userId?.nh12}</p>
+                                                                            <h6 className="mb-0 text-dark">{item?.name}</h6>
+                                                                            <p className="mb-0 text-muted">{item?.userId?.nh12}</p>
                                                                         </div>
-                                                                    </div>
+                                                                    </Link>
                                                                 </div>
                                                             </td>
                                                             <td className="text-capitalize">{item?.gender}</td>
@@ -148,8 +148,8 @@ function PatientHistory() {
                                                                         >
                                                                             
                                                                             <li className="prescription-item">
-                                                                                <NavLink to={`/detail-view/${item?.name}/${item?.lastApt?._id}`} className="prescription-nav" href="#" >
-                                                                                    View Details
+                                                                                <NavLink to={`/user/${item?.userId?._id}`} className="prescription-nav" >
+                                                                                    View Profile
                                                                                 </NavLink>
                                                                             </li>
                                                                             <li className="prescription-item">

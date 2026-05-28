@@ -37,7 +37,7 @@ const doctorDashboard = async (req, res) => {
     const totalApt = await DoctorAppointment.countDocuments({ doctorId: id })
     const todayApt = await DoctorAppointment.countDocuments({ doctorId: id, createdAt: { $gte: start, $lte: end } })
     const pendingRequest = 0
-    const uniquePatientIds = await DoctorAppointment.distinct('patientId', { doctorId: id })
+    const uniquePatientIds = await DoctorAppointment.distinct('patientId', { doctorId: id, status: 'completed' })
     const totalPatient = uniquePatientIds.length
     const totalStaff = await Staff.countDocuments({ userId: id })
     const totalDoctors = await StaffEmployement.countDocuments({ organizationId: id, role: "doctor" })

@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchDoctorDetail } from "../../Redux/features/doctor";
 import base_url from "../../baseUrl";
 import { IoMdQrScanner } from "react-icons/io";
-import Scanner from "../../Doctor/Pages/Scanner";
+import DoctorScanner from "../../Doctor/Pages/DoctorScanner";
 
 function Header() {
     const navigate = useNavigate()
@@ -22,18 +22,15 @@ function Header() {
     const userId = localStorage.getItem('userId')
     const [message, setMessage] = useState('')
     const { profiles, staffData,staffUser, isOwner, kyc, medicalLicense, allowEdit, aboutDoctor, educationWork, customId, isRequest } = useSelector(state => state.doctor)
+    const [scannerOpen, setScannerOpen] = useState(false);
+    const closeScanner = () => setScannerOpen(false);
     useEffect(() => {
         dispatch(fetchDoctorDetail())
     }, [dispatch])
     const handleDetected = (code) => {
         const id = code.includes('/') ? code.split('/').filter(Boolean).pop() : code;
         navigate(`/user/${id}`);
-        // Close the modal
-        const modalElement = document.getElementById('scanner-Request');
-        if (modalElement) {
-            const closeBtn = modalElement.querySelector('[data-bs-dismiss="modal"]');
-            if (closeBtn) closeBtn.click();
-        }
+        setScannerOpen(false);
     };
 
     const dropdownRef = useRef(null);
@@ -135,7 +132,7 @@ function Header() {
                                         </Link>
                                     </div>
                                     <div>
-                                        <button className="rq-scan-btn" data-bs-toggle="modal" data-bs-target="#scanner-Request" ><IoMdQrScanner className="fz-18" /> <span className="mobile-name-title">SCAN</span> </button>
+                                        <button className="rq-scan-btn" onClick={() => setScannerOpen(true)} ><IoMdQrScanner className="fz-18" /> <span className="mobile-name-title">SCAN</span> </button>
                                     </div>
                                     <div>
                                         <a href="javascript:void(0)" className="nw-custom-btn nw-bell-btn doctor-bell-icon"> <FontAwesomeIcon icon={faBell} /> </a>
@@ -213,31 +210,34 @@ function Header() {
             </header>
 
 
-            <div className="modal step-modal fade" id="scanner-Request" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1"
-                aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div className="modal-dialog modal-dialog-centered modal-md">
-                    <div className="modal-content rounded-5 p-4">
-
-                        <div className="d-flex align-items-center justify-content-between">
-                            <div>
-                                <h6 className="lg_title mb-0">Scan </h6>
+            {scannerOpen &&
+                <div className="modal fade show step-modal"
+                    id="scanner-Request"
+                    style={{ display: "block", background: "#00000080" }}
+                    data-bs-backdrop="static"
+                    data-bs-keyboard="false">
+                    <div className="modal-dialog modal-dialog-centered modal-md">
+                        <div className="modal-content rounded-5 p-4">
+                            <div className="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <h6 className="mb-0">Scan </h6>
+                                </div>
+                                <div>
+                                    <button type="button" className="fz-18" onClick={closeScanner} style={{ color: "#00000040", background: "none", border: "none" }}>
+                                        <FontAwesomeIcon icon={faCircleXmark} />
+                                    </button>
+                                </div>
                             </div>
-                            <div>
-                                <button type="button" className="fz-18" data-bs-dismiss="modal" aria-label="Close" style={{ color: "#00000040" }}>
-                                    <FontAwesomeIcon icon={faCircleXmark} />
-                                </button>
-                            </div>
-                        </div>
-                        <div className="modal-body p-0">
-                            <div className="row ">
-                                <div className="col-lg-12">
-                                    <Scanner onDetected={handleDetected} />
+                            <div className="modal-body p-0">
+                                <div className="row ">
+                                    <div className="col-lg-12">
+                                        <DoctorScanner open={scannerOpen} onDetected={handleDetected} />
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </div>}
 
         </>
     )
